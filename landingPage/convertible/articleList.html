@@ -1,0 +1,302 @@
+<style>
+  /* 1. Global Reset & Main Container */
+  .pxl-auto-rental-articles-container {
+    --frame-border-radius: 8px; /* Defined rounded corner radius */
+    --main-font-family: Arial, sans-serif;
+    --title-font-weight: 700;
+    --item-font-weight: 500;
+    --text-color-primary: #333;
+    --text-color-secondary: #666;
+    --column-spacing: 40px;
+    --row-spacing: 60px;
+  }
+
+  /* 2. Row Layout (Flexbox) */
+  .pxl-rental-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--row-spacing);
+  }
+
+  .pxl-rental-row.image-left {
+    flex-direction: row;
+  }
+
+  .pxl-rental-row.content-left {
+    flex-direction: row-reverse;
+  }
+
+  /* 3. Media & Content Column Basic Styles */
+  .media-column,
+  .content-column {
+    flex: 1 1 calc(50% - var(--column-spacing));
+    max-width: calc(50% - var(--column-spacing));
+  }
+
+  .content-column {
+    font-family: var(--main-font-family);
+    color: var(--text-color-primary);
+  }
+
+  /* 4. The Media Frame (Image and Video) */
+  .media-column img,
+  .media-column .video-frame img {
+    /* If you use a real video, this selector must be changed to 'video' */
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(
+      --frame-border-radius
+    ); /* Rounded corners as per image */
+    overflow: hidden;
+    object-fit: cover;
+  }
+
+  /* Conditional: image in video-frame div could be a placeholder */
+  .video-frame img {
+    border: 1px solid #ddd;
+  }
+
+  /* 5. Typography and Text Styling */
+  .row-title {
+    font-size: 32px;
+    font-weight: var(--title-font-weight);
+    margin-bottom: 25px;
+    line-height: 1.2;
+  }
+
+  .details-list .list-item {
+    margin-bottom: 20px;
+    padding-left: 0;
+  }
+
+  .list-item p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+  }
+
+  .list-item .item-main {
+    font-weight: var(--item-font-weight);
+    font-size: 20px;
+  }
+
+  .list-item .item-desc {
+    color: var(--text-color-secondary);
+    font-size: 16px;
+  }
+
+  /* 6. Breakpoints (Responsiveness) */
+  @media (max-width: 991px) {
+    .row-title {
+      font-size: 28px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .pxl-rental-row {
+      flex-direction: column !important; /* Stack vertically */
+    }
+    .media-column,
+    .content-column {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+    .media-column {
+      margin-bottom: 20px;
+    }
+    .row-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+<div class="pxl-auto-rental-articles-container">
+  <div class="pxl-rental-row image-left">
+    <div class="media-column image-frame">
+      <img
+        src="https://example.com/wp-content/uploads/2024/01/porsche-driver-perspective.jpg"
+        alt="Driver in car with US passport and Thai ID card"
+      />
+    </div>
+    <div class="content-column">
+      <h2 class="row-title">Begins Journey with Just 2 things</h2>
+      <div class="details-list">
+        <div class="list-item">
+          <p class="item-main">Thai ID or Passport</p>
+          }
+          <div class="list-item">
+            <p class="item-main">Driver’s License</p>
+            <p class="item-desc">Thai or international</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pxl-rental-row content-left">
+      <div class="media-column video-frame">
+        <img
+          src="https://via.placeholder.com/800x600/ccc/333?text=Video+Frame"
+          alt="Placeholder for vehicle selection video frame"
+        />
+      </div>
+      <div class="content-column">
+        <h2 class="row-title">Seamless Fleet Selection</h2>
+        <div class="details-list">
+          <div class="list-item">
+            <p class="item-main">Wide Vehicle Range</p>
+            <p class="item-desc">From sedans to luxury convertibles</p>
+          </div>
+          <div class="list-item">
+            <p class="item-main">HD Video Showcase</p>
+            <p class="item-desc">Detailed 360&deg; vehicle inspections</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pxl-rental-row image-left">
+      <div class="media-column image-frame">
+        <img
+          src="https://via.placeholder.com/800x600/f0f0f0/333?text=Dynamic+Pricing+Interface"
+          alt="Conceptual interface for dynamic pricing"
+        />
+      </div>
+      <div class="content-column">
+        <h2 class="row-title">Dynamic Pricing, No Surprises</h2>
+        <div class="details-list">
+          <div class="list-item">
+            <p class="item-main">Real-time Quotes</p>
+            <p class="item-desc">Instantly updated availability & rates</p>
+          </div>
+          <div class="list-item">
+            <p class="item-main">Transparent Calculator</p>
+            <p class="item-desc">See all fees upfront</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Configuration: Replace with your actual n8n Production Webhook URL
+    const N8N_WEBHOOK_URL =
+      "https://n8n.somsritshirt.com/webhook/2b39d546-37fa-4bc4-8e75-da5532ba5ab0";
+    const container = document.querySelector(
+      ".pxl-auto-rental-articles-container",
+    );
+
+    /**
+     * Initializes the data fetch and rendering pipeline.
+     */
+    async function initializeDynamicRows() {
+      if (!container) return;
+
+      // Inject a localized loading state
+      container.innerHTML =
+        '<p class="pxl-loading-state" style="text-align:center; padding: 40px;">Synchronizing fleet data...</p>';
+
+      try {
+        const response = await fetch(N8N_WEBHOOK_URL, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const rowsData = await response.json();
+        renderRows(rowsData);
+      } catch (error) {
+        console.error(
+          "PXL Automation Error: Failed to fetch n8n webhook data.",
+          error,
+        );
+        container.innerHTML =
+          '<p class="pxl-error-state" style="color:red; text-align:center;">Unable to load content. Please try again later.</p>';
+      }
+    }
+
+    /**
+     * Iterates through the JSON payload and compiles the DOM structure.
+     * @param {Array} data - The array of article objects from n8n.
+     */
+    function renderRows(data) {
+      // Clear loading state
+      container.innerHTML = "";
+
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = "<p>No rental requirements found.</p>";
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      data.forEach((row, index) => {
+        // Determine layout direction based on index (even = image left, odd = content left)
+        const layoutClass = index % 2 === 0 ? "image-left" : "content-left";
+        const rowWrapper = document.createElement("div");
+        rowWrapper.className = `pxl-rental-row ${layoutClass}`;
+
+        // Build Media Column (Handles both Image and HTML5 Video)
+        let mediaHtml = "";
+        if (row.type === "video") {
+          mediaHtml = `
+                    <div class="media-column video-frame">
+                        <video width="100%" autoplay muted loop playsinline style="border-radius: var(--frame-border-radius); object-fit: cover;">
+                            <source src="${row.mediaUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>`;
+        } else {
+          mediaHtml = `
+                    <div class="media-column image-frame">
+                        <img src="${row.mediaUrl}" alt="${row.title} visual" loading="lazy" />
+                    </div>`;
+        }
+
+        // Build Details List HTML mapping
+        const detailsHtml = row.details
+          .map(
+            (detail) => `
+                <div class="list-item">
+                    <p class="item-main">${detail.main}</p>
+                    ${detail.desc ? `<p class="item-desc">${detail.desc}</p>` : ""}
+                </div>
+            `,
+          )
+          .join("");
+
+        // Build Content Column
+        const contentHtml = `
+                <div class="content-column">
+                    <h2 class="row-title">${row.title}</h2>
+                    <div class="details-list">
+                        ${detailsHtml}
+                    </div>
+                </div>`;
+
+        // Append depending on layout logic to ensure DOM order matches visual order
+        // (Though flex-direction handles the visual flip, strict DOM ordering is better for screen readers)
+        if (layoutClass === "image-left") {
+          rowWrapper.innerHTML = mediaHtml + contentHtml;
+        } else {
+          rowWrapper.innerHTML = contentHtml + mediaHtml;
+        }
+
+        fragment.appendChild(rowWrapper);
+      });
+
+      // Batch DOM insertion for performance
+      container.appendChild(fragment);
+    }
+
+    // Execute the pipeline
+    initializeDynamicRows();
+  });
+</script>
