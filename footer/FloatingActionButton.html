@@ -1,0 +1,197 @@
+<div id="rcms-floating-contact-wrapper" class="rcms-collapsed">
+  <div
+    id="rcms-main-bubble"
+    class="rcms-contact-item rcms-bubble-only"
+    onclick="rcmsToggleContactMenu()"
+  >
+    <div class="rcms-icon-container">
+      <img
+        src="https://targacar.com/wp-content/uploads/customer-service.png"
+        alt="Contact Us"
+        class="rcms-icon rcms-main-icon"
+      />
+    </div>
+    <span class="rcms-label">Contact Us</span>
+  </div>
+
+  <div id="rcms-contact-list">
+    <!-- <a href="tel:+1234567890" class="rcms-contact-item" target="_self">
+      <div class="rcms-icon-container rcms-icon-call">
+        <img src="YOUR_CALL_ICON_URL_HERE" alt="Call" class="rcms-icon" />
+      </div>
+      <span class="rcms-tooltip">Call</span>
+    </a> -->
+
+    <a
+      href="https://line.me/R/ti/p/%40targacar"
+      class="rcms-contact-item"
+      target="_blank"
+    >
+      <div class="rcms-icon-container rcms-icon-line">
+        <img
+          src="https://targacar.com/wp-content/uploads/line.png"
+          alt="LINE"
+          class="rcms-icon"
+        />
+      </div>
+      <span class="rcms-tooltip">Line</span>
+    </a>
+
+    <a
+      href="https://wa.me/66953299625"
+      class="rcms-contact-item"
+      target="_blank"
+    >
+      <div class="rcms-icon-container rcms-icon-whatsapp">
+        <img
+          src="https://targacar.com/wp-content/uploads/whatsapp.png"
+          alt="WhatsApp"
+          class="rcms-icon"
+        />
+      </div>
+      <span class="rcms-tooltip">WhatsApp</span>
+    </a>
+
+    <div
+      class="rcms-contact-item rcms-close-item"
+      onclick="rcmsToggleContactMenu()"
+    >
+      <div class="rcms-icon-container rcms-close-icon-container">
+        <img
+          src="https://targacar.com/wp-content/uploads/arrow-down-sign-to-navigate.png"
+          alt="Close"
+          class="rcms-icon"
+        />
+      </div>
+      <span class="rcms-tooltip-static">Hide</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* --- CORE STYLES & LAYOUT --- */
+  #rcms-floating-contact-wrapper {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    font-family: Arial, sans-serif;
+  }
+
+  .rcms-contact-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    pointer-events: none;
+  }
+
+  .rcms-contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* --- ICON CONTAINER (Backgrounds & Borders) --- */
+  /* Note: If your uploaded images ALREADY include the colored circle, 
+   change the background-color here to 'transparent' and remove the border. */
+  .rcms-icon-container {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: transparent; /* Default reset for image assets */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* border: 2px solid #fff; <- Uncomment if you want a white ring around uploaded images */
+    overflow: hidden; /* Ensures images don't break the circular container */
+  }
+
+  /* --- IMAGE SIZING --- */
+  img.rcms-icon {
+    width: 100%; /* Scales image to fill container */
+    height: 100%;
+    object-fit: cover; /* Change to 'contain' if your images are getting cropped */
+    display: block;
+  }
+
+  /* --- LABELS & TOOLTIPS --- */
+  .rcms-label {
+    margin-left: 10px;
+    background: white;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .rcms-tooltip {
+    margin-left: 10px;
+    background: white;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+
+  .rcms-tooltip-static {
+    margin-left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .rcms-contact-item:hover .rcms-tooltip {
+    opacity: 1;
+  }
+
+  /* --- STATE MANAGEMENT (JS Triggered) --- */
+  #rcms-floating-contact-wrapper.rcms-collapsed #rcms-main-bubble {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #rcms-floating-contact-wrapper.rcms-collapsed #rcms-contact-list {
+    display: none;
+  }
+
+  #rcms-floating-contact-wrapper:not(.rcms-collapsed) #rcms-contact-list {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  #rcms-floating-contact-wrapper:not(.rcms-collapsed)
+    #rcms-contact-list
+    .rcms-contact-item {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #rcms-floating-contact-wrapper:not(.rcms-collapsed) #rcms-main-bubble {
+    opacity: 0;
+    display: none;
+  }
+</style>
+
+<script>
+  function rcmsToggleContactMenu() {
+    const wrapper = document.getElementById("rcms-floating-contact-wrapper");
+    if (!wrapper) return;
+    wrapper.classList.toggle("rcms-collapsed");
+  }
+</script>

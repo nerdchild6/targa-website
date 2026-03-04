@@ -1,0 +1,59 @@
+<script>
+  window.addEventListener("load", function () {
+    // 1. Parse URI parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetBrand = urlParams.get("brand");
+
+    if (!targetBrand) return; // Terminate if no parameter
+
+    // 2. DOM Polling for widget rendering
+    const maxRetries = 40; // Extended to 10 seconds total to account for heavy window.load events
+    let attempts = 0;
+
+    const hydrationInterval = setInterval(() => {
+      attempts++;
+      const checkboxes = document.querySelectorAll(
+        'input.vehicle-brands[type="checkbox"]',
+      );
+
+      if (checkboxes.length > 0) {
+        clearInterval(hydrationInterval);
+
+        // ARCHITECTURAL FIX: Asynchronous Execution Buffer
+        // We defer the event payload injection by 800ms. This ensures the browser's
+        // main thread has processed Elementor's and PXL's heavy frontend init scripts,
+        // guaranteeing that their jQuery delegated event listeners are actively bound to the label.
+        setTimeout(() => {
+          for (const checkbox of checkboxes) {
+            const label = checkbox.closest("label");
+
+            if (label && label.textContent.trim() === targetBrand) {
+              // Check if PXL has already applied the active class to prevent redundant toggling
+              if (!label.classList.contains("active")) {
+                // 3. Inject synthetic human interaction via jQuery
+                // This guarantees PXL's internal state manager registers the interaction,
+                // applies the 'active' class, and triggers the grid re-render.
+                // if (typeof window.jQuery !== "undefined") {
+                //   window.jQuery(label).trigger("click");
+                // } else {
+                label.click(); // Vanilla JS fallback
+                // }
+              }
+
+              // Execute UI scroll alignment
+              label
+                .closest("ul.list-item")
+                .scrollIntoView({ behavior: "smooth", block: "start" });
+              break; // Terminate loop once the target is successfully mutated
+            }
+          }
+        }, 800);
+      } else if (attempts >= maxRetries) {
+        clearInterval(hydrationInterval);
+        console.error(
+          "PXL Filter Hydration Timeout: Target nodes failed to render.",
+        );
+      }
+    }, 250);
+  });
+</script>

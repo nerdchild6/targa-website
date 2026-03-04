@@ -1,0 +1,295 @@
+<style>
+  /* --- Core Container Styles --- */
+  .car-sync-carousel-container {
+    width: 100%;
+    overflow: hidden; /* Hide overflow from individual rows */
+    position: relative;
+    user-select: none; /* Prevent text selection during swipe */
+  }
+
+  .car-carousel-row {
+    display: flex;
+    overflow-x: auto; /* Allow horizontal scrolling (swipe) */
+    scroll-snap-type: x mandatory; /* Snap to whole elements */
+    width: 100%;
+    gap: 10px; /* Adjust spacing between cells */
+    scrollbar-width: none; /* Hide scrollbars for a clean look (Firefox) */
+    position: relative;
+  }
+
+  .car-carousel-row::-webkit-scrollbar {
+    display: none; /* Hide scrollbars for a clean look (Chrome/Safari) */
+  }
+
+  /* --- Individual Cell Styles (3 columns visible) --- */
+  .car-cell {
+    flex: 0 0 calc((100% / 3) - (20px / 3)); /* Adjust gaps calculation based on gap size above */
+    scroll-snap-align: start; /* Snap at the beginning of the cell */
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    aspect-ratio: 4 / 3; /* Adjust to match the aspect ratio in image_0.png */
+    border: 1px solid #222; /* Basic dark border */
+    overflow: hidden;
+    color: white;
+    font-family: Arial, sans-serif;
+    transition: transform 0.3s ease;
+  }
+
+  /* --- Cell Overlay (Logo/Brand/Text) --- */
+  .car-cell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.2) 30%,
+      rgba(0, 0, 0, 0.2) 70%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    z-index: 1;
+  }
+
+  .cell-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  .cell-top {
+    text-align: center;
+  }
+
+  .cell-logo {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffd700; /* Gold color from image */
+  }
+
+  .cell-logo span {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .cell-brand {
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 5px;
+  }
+
+  .cell-model {
+    font-size: 12px;
+    font-weight: lighter;
+    margin-top: -3px;
+    color: #ccc;
+  }
+
+  .cell-bottom-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .stat-unit {
+    display: block;
+    color: #ffd700;
+  }
+
+  .stat-val {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+  }
+
+  /* Basic styling when data is loading */
+  .car-sync-carousel-container.loading {
+    min-height: 400px;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+  }
+
+  /* Optional hover effect */
+  .car-cell:hover {
+    transform: scale(1.02);
+  }
+
+  /* Responsive Carousel Overrides */
+  @media (max-width: 1024px) {
+    .car-cell {
+      /* 2 Columns for Tablet: 100% / 2 minus half of the 10px gap */
+      flex: 0 0 calc((100% / 2) - 5px) !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .car-cell {
+      /* 1 Column for Mobile: Full width */
+      flex: 0 0 100% !important;
+    }
+  }
+</style>
+
+<div id="pxl-luxury-carousel" class="car-sync-carousel-container loading">
+  Loading Car Inventory...
+</div>
+
+<script>
+  (function () {
+    const carouselContainer = document.getElementById("pxl-luxury-carousel");
+    const N8N_ENDPOINT_URL =
+      "https://n8n.somsritshirt.com/webhook/33dd5373-6a65-424f-920c-dfaef4cb5482"; // Production URL
+
+    // 1. Fetch data from n8n
+    fetch(N8N_ENDPOINT_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        renderCarousel(data);
+        // We use setTimeout to ensure the DOM has fully painted the widths
+        // before calculating scroll boundaries
+        setTimeout(initializeSynchronization, 100);
+      })
+      .catch((error) => {
+        console.error("Error fetching data from n8n:", error);
+        carouselContainer.innerHTML = "Error loading inventory.";
+        carouselContainer.classList.remove("loading");
+      });
+
+    // 2. Render HTML based on data
+    function renderCarousel(carData) {
+      carouselContainer.innerHTML = "";
+      carouselContainer.classList.remove("loading");
+
+      const row1Cars = carData.filter((car) => car.row === 1);
+      const row2Cars = carData.filter((car) => car.row === 2);
+
+      const row1Wrapper = createRowWrapper(1, row1Cars);
+      carouselContainer.appendChild(row1Wrapper);
+
+      const row2Wrapper = createRowWrapper(2, row2Cars);
+      carouselContainer.appendChild(row2Wrapper);
+    }
+
+    function createRowWrapper(rowNumber, cars) {
+      const rowWrapper = document.createElement("div");
+      rowWrapper.classList.add("car-carousel-row", `row-${rowNumber}`);
+
+      cars.forEach((car) => {
+        const cell = document.createElement("div");
+        cell.classList.add("car-cell");
+        cell.style.backgroundImage = `url(${car.image})`;
+
+        cell.innerHTML = `
+                    <div class="cell-content">
+                        <div class="cell-top">
+                            <div class="cell-logo"><span>T</span> TARGA </div>
+                            <div class="cell-brand">${car.brand}</div>
+                            <div class="cell-model">${car.model}</div>
+                        </div>
+                        <div class="cell-bottom-stats">
+                            <div><span class="stat-unit">POWER</span><span class="stat-val">${car.power}</span><span class="stat-unit">HP</span></div>
+                            <div><span class="stat-unit">TOP SPEED</span><span class="stat-val">${car.speed}</span><span class="stat-unit">KM/H</span></div>
+                            <div><span class="stat-unit">0-100 KM/H</span><span class="stat-val">${car.zero_hundred}</span><span class="stat-unit">S</span></div>
+                        </div>
+                    </div>
+                `;
+        rowWrapper.appendChild(cell);
+      });
+      return rowWrapper;
+    }
+
+    // 3. Core Synchronization & Reversed Autonomous Progression
+    function initializeSynchronization() {
+      const row1 = document.querySelector(".car-carousel-row.row-1");
+      const row2 = document.querySelector(".car-carousel-row.row-2");
+
+      if (!row1 || !row2) return;
+
+      // INITIALIZATION: Set scroll position to the far right so we can swipe left
+      row1.scrollLeft = row1.scrollWidth;
+      row2.scrollLeft = row1.scrollWidth;
+
+      let isSyncing = false;
+      let autoScrollInterval;
+      const AUTO_SCROLL_DELAY_MS = 4000;
+
+      // A. Manual Sync Engine
+      const syncScroll = (source, target) => {
+        if (isSyncing) return;
+        isSyncing = true;
+        target.scrollLeft = source.scrollLeft;
+        requestAnimationFrame(() => {
+          isSyncing = false;
+        });
+      };
+
+      row1.addEventListener("scroll", () => syncScroll(row1, row2), {
+        passive: true,
+      });
+      row2.addEventListener("scroll", () => syncScroll(row2, row1), {
+        passive: true,
+      });
+      window.addEventListener("resize", () => syncScroll(row1, row2), {
+        passive: true,
+      });
+
+      // B. Reversed Autonomous Progression Engine (Left to Right)
+      const advanceCarousel = () => {
+        const cells = row1.querySelectorAll(".car-cell");
+        let scrollAmount = row1.clientWidth / 3; // Fallback default
+
+        // Dynamically calculate precise column width + gap based on active CSS Media Query
+        if (cells.length > 1) {
+          scrollAmount = cells[1].offsetLeft - cells[0].offsetLeft;
+        }
+
+        // Boundary detection: If we have reached the left-most edge (0)
+        // Using <= 5px threshold for cross-browser sub-pixel safety
+        if (row1.scrollLeft <= 5) {
+          // Reset by jumping to the far right
+          row1.scrollTo({ left: row1.scrollWidth, behavior: "smooth" });
+        } else {
+          // NEGATIVE scroll amount moves the scrollbar left (content shifts right)
+          row1.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
+      };
+
+      const startAutoScroll = () => {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(advanceCarousel, AUTO_SCROLL_DELAY_MS);
+      };
+
+      const stopAutoScroll = () => {
+        clearInterval(autoScrollInterval);
+      };
+
+      // Initialize Autonomous loop
+      startAutoScroll();
+
+      // C. UX Safety Overrides
+      carouselContainer.addEventListener("mouseenter", stopAutoScroll);
+      carouselContainer.addEventListener("mouseleave", startAutoScroll);
+      carouselContainer.addEventListener("touchstart", stopAutoScroll, {
+        passive: true,
+      });
+      carouselContainer.addEventListener("touchend", startAutoScroll, {
+        passive: true,
+      });
+    }
+  })();
+</script>
