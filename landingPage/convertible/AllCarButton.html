@@ -1,0 +1,41 @@
+<div class="targa-primary-cta-container">
+  <a href="/all-cars/" class="targa-btn-primary">View All Cars</a>
+</div>
+
+<style>
+  .targa-primary-cta-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 24px; /* Adjust spatial relationship to elements above */
+  }
+
+  .targa-btn-primary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 48px;
+    background-color: #e88331; /* Derived UI color */
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 50px; /* Pill geometry */
+    transition:
+      background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+      transform 0.2s ease;
+    box-shadow: 0 4px 14px rgba(232, 131, 49, 0.3); /* Soft contextual shadow */
+  }
+
+  .targa-btn-primary:hover {
+    background-color: #cc7228;
+    transform: translateY(-2px); /* Hardware-accelerated lift */
+    color: #ffffff;
+  }
+
+  .targa-btn-primary:active {
+    transform: translateY(0); /* Tactile feedback */
+  }
+</style>
