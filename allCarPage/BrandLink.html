@@ -61,9 +61,7 @@
 
                 // Capture the first matched label's container for the UI scroll execution
                 if (!scrollTarget) {
-                  scrollTarget = label.closest(
-                    "div.pxl-car-listing-wg, ul.list-item",
-                  );
+                  scrollTarget = document.querySelector(".pxl-car-listing-wg");
                 }
                 break; // Terminate inner loop once the specific filter node is mutated
               }
