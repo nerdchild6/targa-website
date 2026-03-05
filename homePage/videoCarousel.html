@@ -272,8 +272,8 @@
                         </div>
                     </div>
                     <div class="rcms-card-media">
-                        <!-- 'video/quicktime' specifically declares .mov support -->
-                        <video loop muted playsinline>
+                        <!-- Removed 'loop' attribute so 'ended' event can fire -->
+                        <video muted playsinline>
                             <source src="${item.videoUrl}" type="video/quicktime">
                             <source src="${item.videoUrl}" type="video/mp4">
                             Your browser does not support the video tag.
@@ -312,15 +312,27 @@
         card.style.setProperty("--offset", offset);
         card.style.setProperty("--abs-offset", absOffset);
 
-        // Handle Active Video State memory management
+        // Handle Active Video State memory management and Auto-Advance
         if (offset === 0) {
           card.classList.add("is-active");
           const vid = card.querySelector("video");
-          if (vid) vid.play().catch((e) => console.log("Autoplay blocked:", e));
+          if (vid) {
+            vid.play().catch((e) => console.log("Autoplay blocked:", e));
+
+            // Reversed: automatically advance to previous slide when video finishes (endless loop left to right)
+            vid.onended = () => {
+              activeIndex = (activeIndex - 1 + totalCards) % totalCards;
+              updateCarousel();
+            };
+          }
         } else {
           card.classList.remove("is-active");
           const vid = card.querySelector("video");
-          if (vid) vid.pause();
+          if (vid) {
+            vid.pause();
+            vid.currentTime = 0; // Reset inactive videos to start
+            vid.onended = null; // Clean up listener
+          }
         }
       });
     }
@@ -329,18 +341,15 @@
     function bindEvents() {
       const totalCards = cards.length;
 
+      // Updated Next/Prev logic for endless wrap-around
       nextBtn.onclick = () => {
-        if (activeIndex < totalCards - 1) {
-          activeIndex++;
-          updateCarousel();
-        }
+        activeIndex = (activeIndex + 1) % totalCards;
+        updateCarousel();
       };
 
       prevBtn.onclick = () => {
-        if (activeIndex > 0) {
-          activeIndex--;
-          updateCarousel();
-        }
+        activeIndex = (activeIndex - 1 + totalCards) % totalCards;
+        updateCarousel();
       };
 
       cards.forEach((card, index) => {
