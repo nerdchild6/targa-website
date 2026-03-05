@@ -1,0 +1,40 @@
+<script>
+  jQuery(window).on("elementor/frontend/init", function () {
+    // Hook specifically into Elementor's event when this widget type is fully rendered
+    elementorFrontend.hooks.addAction(
+      "frontend/element_ready/pxl_post_carousel.default",
+      function ($scope) {
+        // Target only the carousel marked with your custom class
+        if (!$scope.hasClass("pxl-reverse-carousel")) return;
+
+        // Introduce a minimal micro-task buffer to allow PXL's internal Swiper initialization to attach the object to the DOM node
+        setTimeout(function () {
+          // Target the exact proprietary container class identified in your DevTools
+          var carouselContainer = $scope.find(".pxl-swiper-container")[0];
+
+          // Verify the node exists and the Swiper instance has been successfully attached by PXL
+          if (carouselContainer && carouselContainer.swiper) {
+            var swiperInstance = carouselContainer.swiper;
+
+            // Mutate the autoplay configuration payload
+            if (swiperInstance.params.autoplay) {
+              swiperInstance.params.autoplay.reverseDirection = true;
+
+              // Force a reboot of the autoplay controller to apply the mutated parameters
+              swiperInstance.autoplay.stop();
+              swiperInstance.autoplay.start();
+
+              console.log(
+                "Architectural Override: PXL Carousel autoplay direction reversed.",
+              );
+            }
+          } else {
+            console.error(
+              "Architectural Error: Swiper instance not found on .pxl-swiper-container. Ensure autoplay is enabled in GUI.",
+            );
+          }
+        }, 150);
+      },
+    );
+  });
+</script>
