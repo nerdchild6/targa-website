@@ -2,29 +2,50 @@
   /* --- Core Container Styles --- */
   .car-sync-carousel-container {
     width: 100%;
-    overflow: hidden; /* Hide overflow from individual rows */
     position: relative;
     user-select: none; /* Prevent text selection during swipe */
   }
 
-  .car-carousel-row {
+  .car-carousel-track {
     display: flex;
     overflow-x: auto; /* Allow horizontal scrolling (swipe) */
-    scroll-snap-type: x mandatory; /* Snap to whole elements */
+    scroll-snap-type: x mandatory; /* Snap to whole columns */
     width: 100%;
-    gap: 10px; /* Adjust spacing between cells */
+    gap: 10px; /* Adjust spacing between columns */
     scrollbar-width: none; /* Hide scrollbars for a clean look (Firefox) */
     position: relative;
   }
 
-  .car-carousel-row::-webkit-scrollbar {
+  .car-carousel-track::-webkit-scrollbar {
     display: none; /* Hide scrollbars for a clean look (Chrome/Safari) */
   }
 
-  /* --- Individual Cell Styles (3 columns visible) --- */
+  /* --- Column Styles (Groups top and bottom images) --- */
+  .car-column {
+    flex: 0 0 calc((100% / 3) - (20px / 3)); /* 3 columns visible */
+    scroll-snap-align: start; /* Snap at the beginning of the column */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Gap between top and bottom cell */
+  }
+
+  /* Responsive Carousel Overrides */
+  @media (max-width: 1024px) {
+    .car-column {
+      /* 2 Columns for Tablet */
+      flex: 0 0 calc((100% / 2) - 5px) !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .car-column {
+      /* 1 Column for Mobile */
+      flex: 0 0 100% !important;
+    }
+  }
+
+  /* --- Individual Cell Styles --- */
   .car-cell {
-    flex: 0 0 calc((100% / 3) - (20px / 3)); /* Adjust gaps calculation based on gap size above */
-    scroll-snap-align: start; /* Snap at the beginning of the cell */
+    width: 100%;
     position: relative;
     background-size: cover;
     background-position: center;
@@ -34,20 +55,6 @@
     color: white;
     font-family: Arial, sans-serif;
     transition: transform 0.3s ease;
-  }
-
-  /* Responsive Carousel Overrides */
-  @media (max-width: 1024px) {
-    .car-cell {
-      /* 2 Columns for Tablet: 100% / 2 minus half of the 10px gap */
-      flex: 0 0 calc((100% / 2) - 5px) !important;
-    }
-  }
-  @media (max-width: 768px) {
-    .car-cell {
-      /* 1 Column for Mobile: Full width */
-      flex: 0 0 100% !important;
-    }
   }
 
   /* --- Cell Overlay (Logo/Brand/Text) --- */
@@ -165,8 +172,6 @@
       })
       .then((data) => {
         renderCarousel(data);
-        // We use setTimeout to ensure the DOM has fully painted the widths
-        // before calculating scroll boundaries
         setTimeout(initializeSynchronization, 100);
       })
       .catch((error) => {
@@ -178,7 +183,7 @@
         }
       });
 
-    // 2. Render HTML based on data
+    // 2. Render HTML based on data (Grouped by Column)
     function renderCarousel(carData) {
       carouselContainer.innerHTML = "";
       carouselContainer.classList.remove("loading");
@@ -186,106 +191,77 @@
       const row1Cars = carData.filter((car) => car.row === 1);
       const row2Cars = carData.filter((car) => car.row === 2);
 
-      const row1Wrapper = createRowWrapper(1, row1Cars);
-      carouselContainer.appendChild(row1Wrapper);
+      // Calculate total columns based on the row with the most cars
+      const totalCols = Math.max(row1Cars.length, row2Cars.length);
 
-      const row2Wrapper = createRowWrapper(2, row2Cars);
-      carouselContainer.appendChild(row2Wrapper);
+      const track = document.createElement("div");
+      track.classList.add("car-carousel-track");
+
+      for (let i = 0; i < totalCols; i++) {
+        const colWrapper = document.createElement("div");
+        colWrapper.classList.add("car-column");
+
+        // Add Top cell if data exists for this index
+        if (row1Cars[i]) {
+          colWrapper.appendChild(createCell(row1Cars[i]));
+        }
+
+        // Add Bottom cell if data exists for this index
+        if (row2Cars[i]) {
+          colWrapper.appendChild(createCell(row2Cars[i]));
+        }
+
+        track.appendChild(colWrapper);
+      }
+
+      carouselContainer.appendChild(track);
     }
 
-    function createRowWrapper(rowNumber, cars) {
-      const rowWrapper = document.createElement("div");
-      rowWrapper.classList.add("car-carousel-row", `row-${rowNumber}`);
+    // Helper to generate cell HTML
+    function createCell(car) {
+      const cell = document.createElement("div");
+      cell.classList.add("car-cell");
+      cell.style.backgroundImage = `url(${car.image})`;
 
-      cars.forEach((car) => {
-        const cell = document.createElement("div");
-        cell.classList.add("car-cell");
-        cell.style.backgroundImage = `url(${car.image})`;
-
-        cell.innerHTML = `
-                    <div class="cell-content">
-                        <div class="cell-top">
-                            <div class="cell-logo"><span>P</span> PRIME Automotive</div>
-                            <div class="cell-brand">${car.brand}</div>
-                            <div class="cell-model">${car.model}</div>
-                        </div>
-                        <div class="cell-bottom-stats">
-                            <div><span class="stat-unit">POWER</span><span class="stat-val">${car.power}</span><span class="stat-unit">HP</span></div>
-                            <div><span class="stat-unit">TOP SPEED</span><span class="stat-val">${car.speed}</span><span class="stat-unit">KM/H</span></div>
-                            <div><span class="stat-unit">0-100 KM/H</span><span class="stat-val">${car.zero_hundred}</span><span class="stat-unit">S</span></div>
-                        </div>
+      cell.innerHTML = `
+                <div class="cell-content">
+                    <div class="cell-top">
+                        <div class="cell-brand">${car.brand}</div>
+                        <div class="cell-model">${car.model}</div>
                     </div>
-                `;
-        rowWrapper.appendChild(cell);
-      });
-      return rowWrapper;
+                    <div class="cell-bottom-stats">
+                    </div>
+                </div>
+            `;
+      return cell;
     }
 
-    // 3. Core Synchronization & Reversed Autonomous Progression
+    // 3. Autonomous Progression Engine (Left to Right)
     function initializeSynchronization() {
-      const row1 = document.querySelector(".car-carousel-row.row-1");
-      const row2 = document.querySelector(".car-carousel-row.row-2");
-
-      if (!row1 || !row2) return;
+      const track = document.querySelector(".car-carousel-track");
+      if (!track) return;
 
       // INITIALIZATION: Set scroll position to the far right so we can swipe left
-      row1.scrollLeft = row1.scrollWidth;
-      row2.scrollLeft = row1.scrollWidth;
+      track.scrollLeft = track.scrollWidth;
 
-      let isSyncing = false;
-      let isAutoScrolling = false; // Flag to prevent animation conflict
       let autoScrollInterval;
-      let autoScrollTimeout;
       const AUTO_SCROLL_DELAY_MS = 4000;
 
-      // A. Manual Sync Engine
-      const syncScroll = (source, target) => {
-        if (isSyncing || isAutoScrolling) return; // Do not interrupt native smooth scroll
-        isSyncing = true;
-        target.scrollLeft = source.scrollLeft;
-        requestAnimationFrame(() => {
-          isSyncing = false;
-        });
-      };
-
-      row1.addEventListener("scroll", () => syncScroll(row1, row2), {
-        passive: true,
-      });
-      row2.addEventListener("scroll", () => syncScroll(row2, row1), {
-        passive: true,
-      });
-      window.addEventListener("resize", () => syncScroll(row1, row2), {
-        passive: true,
-      });
-
-      // B. Reversed Autonomous Progression Engine (Left to Right)
       const advanceCarousel = () => {
-        const cells = row1.querySelectorAll(".car-cell");
-        let scrollAmount = row1.clientWidth / 3; // Fallback default
+        const cols = track.querySelectorAll(".car-column");
+        let scrollAmount = track.clientWidth / 3; // Fallback default
 
         // Dynamically calculate precise column width + gap based on active CSS Media Query
-        if (cells.length > 1) {
-          scrollAmount = cells[1].offsetLeft - cells[0].offsetLeft;
+        if (cols.length > 1) {
+          scrollAmount = cols[1].offsetLeft - cols[0].offsetLeft;
         }
 
-        isAutoScrolling = true; // Lock JS manual sync during native animation
-
-        // Trigger simultaneous native smooth scrolls
-        if (row1.scrollLeft <= 5) {
-          row1.scrollTo({ left: row1.scrollWidth, behavior: "smooth" });
-          row2.scrollTo({ left: row2.scrollWidth, behavior: "smooth" });
+        // Trigger native smooth scrolls on the master track
+        if (track.scrollLeft <= 5) {
+          track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
         } else {
-          row1.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-          row2.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+          track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         }
-
-        // Unlock manual sync after animation finishes (~800ms)
-        clearTimeout(autoScrollTimeout);
-        autoScrollTimeout = setTimeout(() => {
-          isAutoScrolling = false;
-          // Force a sub-pixel alignment check after animation completes
-          if (row1 && row2) row2.scrollLeft = row1.scrollLeft;
-        }, 800);
       };
 
       const startAutoScroll = () => {
@@ -295,8 +271,6 @@
 
       const stopAutoScroll = () => {
         clearInterval(autoScrollInterval);
-        isAutoScrolling = false; // Immediately allow manual sync if user interrupts
-        clearTimeout(autoScrollTimeout);
       };
 
       // Initialize Autonomous loop
