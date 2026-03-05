@@ -73,6 +73,13 @@
       rgba(0, 0, 0, 0.8) 100%
     );
     z-index: 1;
+    /* Hide the overlay completely if there is no text inside */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .car-cell.no-text::before {
+    opacity: 0; /* Remove gradient overlay if no text is present */
   }
 
   .cell-content {
@@ -82,7 +89,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding: 20px;
   }
 
@@ -90,49 +96,19 @@
     text-align: center;
   }
 
-  .cell-logo {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #ffd700; /* Gold color from image */
-  }
-
-  .cell-logo span {
-    font-weight: bold;
-    font-size: 14px;
-  }
-
   .cell-brand {
     font-size: 18px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-top: 5px;
+    font-weight: bold;
   }
 
   .cell-model {
     font-size: 12px;
     font-weight: lighter;
-    margin-top: -3px;
+    margin-top: 2px;
     color: #ccc;
-  }
-
-  .cell-bottom-stats {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
-  .stat-unit {
-    display: block;
-    color: #ffd700;
-  }
-
-  .stat-val {
-    font-size: 24px;
-    font-weight: bold;
-    display: block;
   }
 
   /* Basic styling when data is loading */
@@ -201,14 +177,14 @@
         const colWrapper = document.createElement("div");
         colWrapper.classList.add("car-column");
 
-        // Add Top cell if data exists for this index
+        // Add Top cell if data exists for this index (Pass true to show text)
         if (row1Cars[i]) {
-          colWrapper.appendChild(createCell(row1Cars[i]));
+          colWrapper.appendChild(createCell(row1Cars[i], true));
         }
 
-        // Add Bottom cell if data exists for this index
+        // Add Bottom cell if data exists for this index (Pass false to hide text)
         if (row2Cars[i]) {
-          colWrapper.appendChild(createCell(row2Cars[i]));
+          colWrapper.appendChild(createCell(row2Cars[i], false));
         }
 
         track.appendChild(colWrapper);
@@ -218,21 +194,25 @@
     }
 
     // Helper to generate cell HTML
-    function createCell(car) {
+    function createCell(car, haveText) {
       const cell = document.createElement("div");
       cell.classList.add("car-cell");
       cell.style.backgroundImage = `url(${car.image})`;
 
-      cell.innerHTML = `
-                <div class="cell-content">
-                    <div class="cell-top">
-                        <div class="cell-brand">${car.brand}</div>
-                        <div class="cell-model">${car.model}</div>
-                    </div>
-                    <div class="cell-bottom-stats">
-                    </div>
+      if (haveText) {
+        cell.innerHTML = `
+            <div class="cell-content">
+                <div class="cell-top">
+                    <div class="cell-brand">${car.brand}</div>
+                    <div class="cell-model">${car.model}</div>
                 </div>
-            `;
+            </div>
+        `;
+      } else {
+        // Add a class so we can hide the dark gradient overlay if there's no text
+        cell.classList.add("no-text");
+      }
+
       return cell;
     }
 
