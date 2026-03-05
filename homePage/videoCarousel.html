@@ -1,13 +1,14 @@
 <style>
-  /* --- CSS Architecture --- */
+  /* --- CSS Architecture: Light Orange Cream Theme (Portrait 9:16) --- */
   .rcms-carousel-wrapper {
     position: relative;
     width: 100%;
-    height: 600px;
+    height: 800px; /* Increased to accommodate taller vertical cards */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle at center, #1a202c 0%, #0f1219 100%);
+    /* Matches your website's light background */
+    background: radial-gradient(circle at center, #ffffff 0%, #f7f4f0 100%);
     overflow: hidden;
     /* Establishes the 3D coordinate space */
     perspective: 1200px;
@@ -28,15 +29,15 @@
 
   .rcms-card {
     position: absolute;
+    /* Narrower width for optimal 9:16 presentation */
     width: 320px;
-    height: 480px;
     border-radius: 24px;
-    /* Glassmorphism parameters */
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    /* Light Glassmorphism parameters */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(241, 138, 59, 0.15); /* Orange tint border */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
 
     display: flex;
     flex-direction: column;
@@ -54,7 +55,8 @@
     --offset: 0;
     --abs-offset: 0;
 
-    transform: translateX(calc(var(--offset) * 160px))
+    /* Adjusted translateX distance for narrower vertical cards */
+    transform: translateX(calc(var(--offset) * 150px))
       translateZ(calc(var(--abs-offset) * -200px))
       rotateY(calc(var(--offset) * -20deg));
 
@@ -63,12 +65,12 @@
     filter: blur(calc(var(--abs-offset) * 3px));
   }
 
-  /* Active state enhancement */
+  /* Active state enhancement - Orange Theme */
   .rcms-card.is-active {
-    border-color: rgba(64, 224, 208, 0.4);
+    border-color: rgba(241, 138, 59, 0.6);
     box-shadow:
-      0 0 40px rgba(64, 224, 208, 0.15),
-      inset 0 0 20px rgba(64, 224, 208, 0.05);
+      0 0 40px rgba(241, 138, 59, 0.15),
+      inset 0 0 20px rgba(241, 138, 59, 0.05);
   }
 
   /* Card Internal UI Structure */
@@ -77,14 +79,15 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .rcms-avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #40e0d0, #008080);
+    /* Orange gradient mapping to website brand */
+    background: linear-gradient(135deg, #f18a3b, #d97020);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,53 +97,42 @@
   }
 
   .rcms-meta {
-    color: #a0aec0;
+    color: #718096; /* Darker grey for light theme readability */
     font-size: 12px;
   }
 
   .rcms-meta strong {
-    color: #fff;
+    color: #2d3748;
     display: block;
     font-size: 14px;
   }
 
+  /* Enforcing the 9:16 Portrait ratio */
   .rcms-card-media {
-    flex: 1;
+    width: 100%;
+    aspect-ratio: 9 / 16;
     position: relative;
-    background: #000;
+    background: #e2e8f0; /* Soft grey loading background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .rcms-card-media video {
     width: 100%;
     height: 100%;
+    /* Cover fills the vertical space edge-to-edge beautifully */
     object-fit: cover;
-    opacity: 0.8;
-  }
-
-  .rcms-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
-    display: flex;
-    align-items: flex-end;
-    padding: 20px;
-  }
-
-  .rcms-title {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 800;
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: #000;
   }
 
   .rcms-card-footer {
     padding: 16px;
     display: flex;
     justify-content: space-between;
-    color: #a0aec0;
+    color: #718096;
     font-size: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .rcms-footer-icon {
@@ -159,11 +151,11 @@
   }
 
   .rcms-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    width: 40px;
-    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(241, 138, 59, 0.3);
+    color: #f18a3b;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -171,162 +163,21 @@
     align-items: center;
     backdrop-filter: blur(4px);
     transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
   }
 
   .rcms-btn:hover {
-    background: rgba(64, 224, 208, 0.3);
-    border-color: rgba(64, 224, 208, 0.6);
+    background: #f18a3b;
+    color: white;
+    border-color: #f18a3b;
   }
 </style>
 
 <!-- --- HTML DOM Structure --- -->
 <div class="rcms-carousel-wrapper">
   <div class="rcms-carousel-scene" id="rcmsScene">
-    <!-- Fleet Item 1 -->
-    <div class="rcms-card" data-index="0">
-      <div class="rcms-card-header">
-        <div class="rcms-avatar">LUX</div>
-        <div class="rcms-meta">
-          <strong>Premium Fleet</strong>
-          @rcms_luxury
-        </div>
-      </div>
-      <div class="rcms-card-media">
-        <!-- Replace src with your actual video URLs -->
-        <video autoplay loop muted playsinline>
-          <source
-            src="https://cdn.pixabay.com/video/2021/08/23/85973-592182283_tiny.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="rcms-overlay">
-          <div class="rcms-title">
-            MERCEDES<br /><span style="color: #40e0d0">S-CLASS</span>
-          </div>
-        </div>
-      </div>
-      <div class="rcms-card-footer">
-        <div class="rcms-footer-icon">💬 12</div>
-        <div class="rcms-footer-icon">🔄 4</div>
-        <div class="rcms-footer-icon">❤️ 89</div>
-      </div>
-    </div>
-
-    <!-- Fleet Item 2 -->
-    <div class="rcms-card" data-index="1">
-      <div class="rcms-card-header">
-        <div class="rcms-avatar">SUV</div>
-        <div class="rcms-meta">
-          <strong>Off-Road Series</strong>
-          @rcms_adventure
-        </div>
-      </div>
-      <div class="rcms-card-media">
-        <video autoplay loop muted playsinline>
-          <source
-            src="https://cdn.pixabay.com/video/2019/12/12/30154-379654519_tiny.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="rcms-overlay">
-          <div class="rcms-title">
-            RANGE ROVER<br /><span style="color: #40e0d0">DEFENDER</span>
-          </div>
-        </div>
-      </div>
-      <div class="rcms-card-footer">
-        <div class="rcms-footer-icon">💬 45</div>
-        <div class="rcms-footer-icon">🔄 12</div>
-        <div class="rcms-footer-icon">❤️ 210</div>
-      </div>
-    </div>
-
-    <!-- Fleet Item 3 (Initial Center) -->
-    <div class="rcms-card" data-index="2">
-      <div class="rcms-card-header">
-        <div class="rcms-avatar">EV</div>
-        <div class="rcms-meta">
-          <strong>Electric Future</strong>
-          @rcms_green
-        </div>
-      </div>
-      <div class="rcms-card-media">
-        <video autoplay loop muted playsinline>
-          <source
-            src="https://cdn.pixabay.com/video/2020/05/24/40061-424687556_tiny.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="rcms-overlay">
-          <div class="rcms-title">
-            TESLA<br /><span style="color: #40e0d0">MODEL S</span>
-          </div>
-        </div>
-      </div>
-      <div class="rcms-card-footer">
-        <div class="rcms-footer-icon">💬 128</div>
-        <div class="rcms-footer-icon">🔄 56</div>
-        <div class="rcms-footer-icon">❤️ 1.2K</div>
-      </div>
-    </div>
-
-    <!-- Fleet Item 4 -->
-    <div class="rcms-card" data-index="3">
-      <div class="rcms-card-header">
-        <div class="rcms-avatar">SPR</div>
-        <div class="rcms-meta">
-          <strong>Sport Dynamics</strong>
-          @rcms_performance
-        </div>
-      </div>
-      <div class="rcms-card-media">
-        <video autoplay loop muted playsinline>
-          <source
-            src="https://cdn.pixabay.com/video/2021/04/13/70922-536495394_tiny.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="rcms-overlay">
-          <div class="rcms-title">
-            PORSCHE<br /><span style="color: #40e0d0">911 GT3</span>
-          </div>
-        </div>
-      </div>
-      <div class="rcms-card-footer">
-        <div class="rcms-footer-icon">💬 84</div>
-        <div class="rcms-footer-icon">🔄 23</div>
-        <div class="rcms-footer-icon">❤️ 845</div>
-      </div>
-    </div>
-
-    <!-- Fleet Item 5 -->
-    <div class="rcms-card" data-index="4">
-      <div class="rcms-card-header">
-        <div class="rcms-avatar">ECO</div>
-        <div class="rcms-meta">
-          <strong>City Commuter</strong>
-          @rcms_economy
-        </div>
-      </div>
-      <div class="rcms-card-media">
-        <video autoplay loop muted playsinline>
-          <source
-            src="https://cdn.pixabay.com/video/2023/10/22/186000-876822832_tiny.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="rcms-overlay">
-          <div class="rcms-title">
-            TOYOTA<br /><span style="color: #40e0d0">PRIUS</span>
-          </div>
-        </div>
-      </div>
-      <div class="rcms-card-footer">
-        <div class="rcms-footer-icon">💬 9</div>
-        <div class="rcms-footer-icon">🔄 2</div>
-        <div class="rcms-footer-icon">❤️ 45</div>
-      </div>
-    </div>
+    <!-- Cards will be dynamically injected here by JS fetching from n8n -->
   </div>
 
   <!-- Navigation Constraints -->
@@ -336,33 +187,136 @@
   </div>
 </div>
 
-<!-- --- JavaScript Logic --- -->
+<!-- --- JavaScript Logic (With n8n Webhook Integration) --- -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".rcms-card");
+    // --- CONFIGURATION ---
+    // Ensure your n8n webhook returns a JSON Array with vertical video URLs
+    const N8N_WEBHOOK_URL =
+      "https://n8n.somsritshirt.com/webhook/bd8f782b-5194-4354-8d90-af66c86ef1c4";
+
+    const scene = document.getElementById("rcmsScene");
     const prevBtn = document.getElementById("rcmsPrev");
     const nextBtn = document.getElementById("rcmsNext");
 
-    let activeIndex = 2; // Default starting index (middle card)
-    const totalCards = cards.length;
+    let activeIndex = 0;
+    let cards = [];
 
-    // Core Rendering Engine
+    // Fallback Mock Data for testing if n8n webhook isn't configured yet
+    const mockData = [
+      {
+        id: "LUX",
+        title: "Luxury Fleet",
+        handle: "@targa_luxury",
+        videoUrl:
+          "https://cdn.pixabay.com/video/2021/08/23/85973-592182283_tiny.mp4",
+        comments: 12,
+        shares: 4,
+        likes: 89,
+      },
+      {
+        id: "SPR",
+        title: "Supercar Series",
+        handle: "@targa_super",
+        videoUrl:
+          "https://cdn.pixabay.com/video/2021/04/13/70922-536495394_tiny.mp4",
+        comments: 45,
+        shares: 12,
+        likes: 210,
+      },
+      {
+        id: "EXO",
+        title: "Exotic Rentals",
+        handle: "@targa_exotic",
+        videoUrl:
+          "https://cdn.pixabay.com/video/2020/05/24/40061-424687556_tiny.mp4",
+        comments: 128,
+        shares: 56,
+        likes: 1200,
+      },
+    ];
+
+    // 1. Asynchronous Data Fetching Engine
+    async function fetchFleetData() {
+      try {
+        let fleetData;
+
+        if (N8N_WEBHOOK_URL) {
+          const response = await fetch(N8N_WEBHOOK_URL);
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          fleetData = await response.json();
+        } else {
+          console.log("No n8n Webhook defined. Loading Mock Data.");
+          fleetData = mockData;
+        }
+
+        renderCarouselDOM(fleetData);
+      } catch (error) {
+        console.error("Failed to fetch fleet inventory from n8n:", error);
+        scene.innerHTML = `<p style="color: #718096;">Unable to load fleet inventory.</p>`;
+      }
+    }
+
+    // 2. DOM Hydration Engine
+    function renderCarouselDOM(fleetData) {
+      scene.innerHTML = fleetData
+        .map(
+          (item, index) => `
+                <div class="rcms-card" data-index="${index}">
+                    <div class="rcms-card-header">
+                        <div class="rcms-avatar">${item.id}</div>
+                        <div class="rcms-meta">
+                            <strong>${item.title}</strong>
+                            ${item.handle}
+                        </div>
+                    </div>
+                    <div class="rcms-card-media">
+                        <!-- 'video/quicktime' specifically declares .mov support -->
+                        <video loop muted playsinline>
+                            <source src="${item.videoUrl}" type="video/quicktime">
+                            <source src="${item.videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="rcms-card-footer">
+                        <div class="rcms-footer-icon">💬 ${item.comments || 0}</div>
+                        <div class="rcms-footer-icon">🔄 ${item.shares || 0}</div>
+                        <div class="rcms-footer-icon">❤️ ${item.likes || 0}</div>
+                    </div>
+                </div>
+            `,
+        )
+        .join("");
+
+      // Re-select newly injected DOM nodes
+      cards = document.querySelectorAll(".rcms-card");
+
+      // Set initial active index to middle item if enough exist, otherwise 0
+      activeIndex = Math.floor(cards.length / 2);
+
+      bindEvents();
+      updateCarousel();
+    }
+
+    // 3. Core 3D Transformation Engine
     function updateCarousel() {
+      const totalCards = cards.length;
+      if (totalCards === 0) return;
+
       cards.forEach((card, index) => {
-        // Calculate spatial relationship relative to the active index
         const offset = index - activeIndex;
         const absOffset = Math.abs(offset);
 
-        // Inject dynamic CSS variables for hardware-accelerated transforms
+        // Hardware-accelerated transforms mapping
         card.style.setProperty("--offset", offset);
         card.style.setProperty("--abs-offset", absOffset);
 
-        // Toggle active class for auxiliary styling (borders, glows)
+        // Handle Active Video State memory management
         if (offset === 0) {
           card.classList.add("is-active");
-          // Ensure active video plays, others pause to save browser memory
           const vid = card.querySelector("video");
-          if (vid) vid.play();
+          if (vid) vid.play().catch((e) => console.log("Autoplay blocked:", e));
         } else {
           card.classList.remove("is-active");
           const vid = card.querySelector("video");
@@ -371,30 +325,33 @@
       });
     }
 
-    // Event Listeners for Navigation
-    nextBtn.addEventListener("click", () => {
-      if (activeIndex < totalCards - 1) {
-        activeIndex++;
-        updateCarousel();
-      }
-    });
+    // 4. Event Binding Layer
+    function bindEvents() {
+      const totalCards = cards.length;
 
-    prevBtn.addEventListener("click", () => {
-      if (activeIndex > 0) {
-        activeIndex--;
-        updateCarousel();
-      }
-    });
+      nextBtn.onclick = () => {
+        if (activeIndex < totalCards - 1) {
+          activeIndex++;
+          updateCarousel();
+        }
+      };
 
-    // Direct Card Click Delegation
-    cards.forEach((card, index) => {
-      card.addEventListener("click", () => {
-        activeIndex = index;
-        updateCarousel();
+      prevBtn.onclick = () => {
+        if (activeIndex > 0) {
+          activeIndex--;
+          updateCarousel();
+        }
+      };
+
+      cards.forEach((card, index) => {
+        card.onclick = () => {
+          activeIndex = index;
+          updateCarousel();
+        };
       });
-    });
+    }
 
-    // Initial Paint
-    updateCarousel();
+    // Execute initialization
+    fetchFleetData();
   });
 </script>
