@@ -28,12 +28,26 @@
     position: relative;
     background-size: cover;
     background-position: center;
-    aspect-ratio: 4 / 3; /* Adjust to match the aspect ratio in image_0.png */
+    aspect-ratio: 4 / 3; /* Adjust to match the aspect ratio */
     border: 1px solid #222; /* Basic dark border */
     overflow: hidden;
     color: white;
     font-family: Arial, sans-serif;
     transition: transform 0.3s ease;
+  }
+
+  /* Responsive Carousel Overrides */
+  @media (max-width: 1024px) {
+    .car-cell {
+      /* 2 Columns for Tablet: 100% / 2 minus half of the 10px gap */
+      flex: 0 0 calc((100% / 2) - 5px) !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .car-cell {
+      /* 1 Column for Mobile: Full width */
+      flex: 0 0 100% !important;
+    }
   }
 
   /* --- Cell Overlay (Logo/Brand/Text) --- */
@@ -129,22 +143,9 @@
   .car-cell:hover {
     transform: scale(1.02);
   }
-
-  /* Responsive Carousel Overrides */
-  @media (max-width: 1024px) {
-    .car-cell {
-      /* 2 Columns for Tablet: 100% / 2 minus half of the 10px gap */
-      flex: 0 0 calc((100% / 2) - 5px) !important;
-    }
-  }
-  @media (max-width: 768px) {
-    .car-cell {
-      /* 1 Column for Mobile: Full width */
-      flex: 0 0 100% !important;
-    }
-  }
 </style>
 
+<!-- MAIN HTML CONTAINER (Crucial: Do not delete) -->
 <div id="pxl-luxury-carousel" class="car-sync-carousel-container loading">
   Loading Car Inventory...
 </div>
@@ -157,7 +158,11 @@
 
     // 1. Fetch data from n8n
     fetch(N8N_ENDPOINT_URL)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+      })
       .then((data) => {
         renderCarousel(data);
         // We use setTimeout to ensure the DOM has fully painted the widths
@@ -166,8 +171,11 @@
       })
       .catch((error) => {
         console.error("Error fetching data from n8n:", error);
-        carouselContainer.innerHTML = "Error loading inventory.";
-        carouselContainer.classList.remove("loading");
+        if (carouselContainer) {
+          carouselContainer.innerHTML =
+            "Error loading inventory. Please check n8n backend.";
+          carouselContainer.classList.remove("loading");
+        }
       });
 
     // 2. Render HTML based on data
@@ -197,7 +205,7 @@
         cell.innerHTML = `
                     <div class="cell-content">
                         <div class="cell-top">
-                            <div class="cell-logo"><span>T</span> TARGA </div>
+                            <div class="cell-logo"><span>P</span> PRIME Automotive</div>
                             <div class="cell-brand">${car.brand}</div>
                             <div class="cell-model">${car.model}</div>
                         </div>
@@ -225,12 +233,14 @@
       row2.scrollLeft = row1.scrollWidth;
 
       let isSyncing = false;
+      let isAutoScrolling = false; // Flag to prevent animation conflict
       let autoScrollInterval;
+      let autoScrollTimeout;
       const AUTO_SCROLL_DELAY_MS = 4000;
 
       // A. Manual Sync Engine
       const syncScroll = (source, target) => {
-        if (isSyncing) return;
+        if (isSyncing || isAutoScrolling) return; // Do not interrupt native smooth scroll
         isSyncing = true;
         target.scrollLeft = source.scrollLeft;
         requestAnimationFrame(() => {
@@ -258,15 +268,24 @@
           scrollAmount = cells[1].offsetLeft - cells[0].offsetLeft;
         }
 
-        // Boundary detection: If we have reached the left-most edge (0)
-        // Using <= 5px threshold for cross-browser sub-pixel safety
+        isAutoScrolling = true; // Lock JS manual sync during native animation
+
+        // Trigger simultaneous native smooth scrolls
         if (row1.scrollLeft <= 5) {
-          // Reset by jumping to the far right
           row1.scrollTo({ left: row1.scrollWidth, behavior: "smooth" });
+          row2.scrollTo({ left: row2.scrollWidth, behavior: "smooth" });
         } else {
-          // NEGATIVE scroll amount moves the scrollbar left (content shifts right)
           row1.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+          row2.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         }
+
+        // Unlock manual sync after animation finishes (~800ms)
+        clearTimeout(autoScrollTimeout);
+        autoScrollTimeout = setTimeout(() => {
+          isAutoScrolling = false;
+          // Force a sub-pixel alignment check after animation completes
+          if (row1 && row2) row2.scrollLeft = row1.scrollLeft;
+        }, 800);
       };
 
       const startAutoScroll = () => {
@@ -276,6 +295,8 @@
 
       const stopAutoScroll = () => {
         clearInterval(autoScrollInterval);
+        isAutoScrolling = false; // Immediately allow manual sync if user interrupts
+        clearTimeout(autoScrollTimeout);
       };
 
       // Initialize Autonomous loop
