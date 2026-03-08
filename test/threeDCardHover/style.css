@@ -129,3 +129,49 @@ body {
   opacity: 1;
   transform: translate3d(5%, -20%, 670px);
 }
+
+/* --- Price Tag 3D Styling --- */
+.price-tag {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  /* Start flat and centered */
+  transform: translate3d(-50%, 0, 0);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 10; /* Ensure it floats above the wrapper */
+  text-align: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  pointer-events: none; /* Allow clicks to pass through to the card */
+}
+
+.price-tag .currency {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff; /* Fixed: White color ensures visibility against dark card */
+  vertical-align: top;
+  margin-right: 2px;
+}
+
+.price-tag .amount {
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  line-height: 0.9;
+}
+
+.price-tag .per-day {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-left: 6px;
+}
+
+.card:hover .price-tag {
+  opacity: 1;
+  /* Moves the price forward in Z-space to create depth */
+  transform: translate3d(-50%, 0, 150px);
+}
