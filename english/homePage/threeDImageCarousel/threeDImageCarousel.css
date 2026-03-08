@@ -1,184 +1,208 @@
 <style>
-.three-D-hover-car-carousel-card,
-.three-D-hover-car-carousel-card * {
-  box-sizing: border-box;
-}
+  /* --- Core Container Styles --- */
+  .three-D-carousel-container {
+    width: 100%;
+    position: relative;
+    user-select: none;
+    background: radial-gradient(circle at center, #efb470 0%, #fff4e4 100%);
+    border-radius: 15px;
+  }
 
-.three-D-hover-car-carousel {
-  width: 100%;
-  height: 400px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  padding-top: 0;
-  background: radial-gradient(circle at center, #efb470 0%, #fff4e4 100%);
-}
+  /* * CRITICAL ARCHITECTURAL NOTE: 
+   * Padding-top and padding-bottom must accommodate the max Z-axis transform.
+   * If reduced, the 3D pop-out elements will clip against the overflow bounds.
+   */
+  .three-D-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    gap: 30px;
+    padding: 100px 30px; 
+    scrollbar-width: none;
+    align-items: center;
+  }
 
-.three-D-hover-car-carousel-card {
-  width: 300px;
-  height: 380px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  padding: 0 36px;
-  padding-top: 50px;
-  perspective: 2500px;
-  cursor: pointer;
-  border-radius: 30px;
-}
+  .three-D-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
 
-.three-D-hover-car-carousel-cover-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  .three-D-carousel-container.loading {
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
 
-.three-D-hover-car-carousel-wrapper {
-  transition: all 0.5s;
-  position: absolute;
-  width: 100%;
-  z-index: -1;
-  background: #000;
-  border-radius: 30px;
-  box-shadow:
-    rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px;
-}
+  /* --- 3D Card Architecture --- */
+  .three-D-hover-car-carousel-card,
+  .three-D-hover-car-carousel-card * {
+    box-sizing: border-box;
+  }
 
-.three-D-hover-car-carousel-wrapper img {
-  border-radius: 30px;
-  box-shadow:
-    rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px;
-}
+  .three-D-hover-car-carousel-card {
+    flex: 0 0 300px; /* Lock dimension for track indexing */
+    scroll-snap-align: center;
+    height: 380px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding: 0 36px;
+    padding-top: 50px;
+    perspective: 2500px;
+    cursor: pointer;
+    border-radius: 30px;
+  }
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper {
-  transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
-  box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
-}
+  .three-D-hover-car-carousel-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 30px;
+  }
 
-.three-D-hover-car-carousel-wrapper::before,
-.three-D-hover-car-carousel-wrapper::after {
-  content: "";
-  opacity: 0;
-  width: 100%;
-  height: 80px;
-  transition: all 0.5s;
-  border-radius: 30px;
-  position: absolute;
-  left: 0;
-  box-shadow:
-    rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px;
-}
+  .three-D-hover-car-carousel-wrapper {
+    transition: all 0.5s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: -1;
+    background: #000;
+    border-radius: 30px;
+    box-shadow:
+      rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }
 
-.three-D-hover-car-carousel-wrapper::before {
-  top: 0;
-  height: 100%;
-  background-image: linear-gradient(
-    to top,
-    transparent 46%,
-    rgba(12, 13, 19, 0.5) 68%,
-    rgba(12, 13, 19) 97%
-  );
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper {
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+    box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  }
 
-.three-D-hover-car-carousel-wrapper::after {
-  bottom: 0;
-  opacity: 1;
-  background-image: linear-gradient(
-    to bottom,
-    transparent 46%,
-    rgba(12, 13, 19, 0.5) 68%,
-    rgba(12, 13, 19) 97%
-  );
-}
-
-.three-D-hover-car-carousel-card:hover
   .three-D-hover-car-carousel-wrapper::before,
-.three-D-hover-car-carousel-wrapper::after {
-  opacity: 1;
-}
-
-.three-D-hover-car-carousel-card:hover
   .three-D-hover-car-carousel-wrapper::after {
-  height: 120px;
-}
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    border-radius: 30px;
+    position: absolute;
+    left: 0;
+    box-shadow:
+      rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }
 
-.three-D-hover-car-carousel-character {
-  width: 100%;
-  transition: transform 0.5s;
-  position: absolute;
-  bottom: 10px;
-}
+  .three-D-hover-car-carousel-wrapper::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(
+      to top,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character {
-  transform: translate3d(0%, -50px, 100px);
-}
+  .three-D-hover-car-carousel-wrapper::after {
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-cover-image {
-  opacity: 0.3;
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper::before,
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper::after {
+    opacity: 1;
+  }
 
-.three-D-hover-car-carousel-logo {
-  width: 100%;
-  opacity: 0;
-  transition: all 0.5s;
-  filter: drop-shadow(2px 2px 2px #000);
-  position: absolute;
-  z-index: -1;
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper::after {
+    height: 120px;
+  }
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-  opacity: 1;
-  transform: translate3d(5%, -20%, 670px);
-}
+  .three-D-hover-car-carousel-character {
+    width: 100%;
+    transition: transform 0.5s;
+    position: absolute;
+    bottom: 10px;
+    pointer-events: none;
+  }
 
-/* --- Price Tag 3D Styling --- */
-.three-D-hover-car-carousel-price-tag {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  /* Start flat and centered */
-  transform: translate3d(-50%, 0, 0);
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 10; /* Ensure it floats above the wrapper */
-  text-align: center;
-  font-family: "Segoe UI", Arial, sans-serif;
-  pointer-events: none; /* Allow clicks to pass through to the card */
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character {
+    transform: translate3d(0%, -50px, 100px);
+  }
 
-.three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-currency {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff; /* Fixed: White color ensures visibility against dark card */
-  vertical-align: top;
-  margin-right: 2px;
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-cover-image {
+    opacity: 0.3;
+  }
 
-.three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-amount {
-  font-size: 30px;
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-  line-height: 0.9;
-}
+  .three-D-hover-car-carousel-logo {
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    filter: drop-shadow(2px 2px 2px #000);
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+  }
 
-.three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-per-day {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-left: 6px;
-}
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
+    opacity: 1;
+    transform: translate3d(5%, -20%, 670px);
+  }
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-price-tag {
-  opacity: 1;
-  /* Moves the price forward in Z-space to create depth */
-  transform: translate3d(-50%, 0, 150px);
-}
+  /* --- Price Tag 3D Styling --- */
+  .three-D-hover-car-carousel-price-tag {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 10;
+    text-align: center;
+    font-family: "Segoe UI", Arial, sans-serif;
+    pointer-events: none;
+  }
+
+  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-currency {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    vertical-align: top;
+    margin-right: 2px;
+  }
+
+  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-amount {
+    font-size: 30px;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    line-height: 0.9;
+  }
+
+  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-per-day {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-left: 6px;
+  }
+
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-price-tag {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 150px);
+  }
 </style>

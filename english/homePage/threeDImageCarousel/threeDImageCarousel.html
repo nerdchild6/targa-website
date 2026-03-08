@@ -1,31 +1,130 @@
-<div class="three-D-hover-car-carousel">
-  <!-- Main Card Code -->
-  <div class="three-D-hover-car-carousel-card">
-    <!-- Cover image Code -->
-    <div class="three-D-hover-car-carousel-wrapper">
-      <img
-        src="https://targacar.com/wp-content/uploads/card-scaled.jpeg"
-        class="three-D-hover-car-carousel-cover-image"
-      />
-    </div>
-
-    <!-- Logo Code -->
-    <img
-      src="https://targacar.com/wp-content/uploads/popup-1.png"
-      class="three-D-hover-car-carousel-logo"
-    />
-
-    <!-- Character image Code -->
-    <img
-      src="https://targacar.com/wp-content/uploads/text-1.png"
-      class="three-D-hover-car-carousel-character"
-    />
-
-    <!-- Price Tag Code -->
-    <div class="three-D-hover-car-carousel-price-tag">
-      <span class="three-D-hover-car-carousel-currency">฿</span>
-      <span class="three-D-hover-car-carousel-amount">99,999</span>
-      <span class="three-D-hover-car-carousel-per-day">/ day</span>
-    </div>
-  </div>
+<!-- MAIN HTML CONTAINER -->
+<div id="pxl-3d-car-carousel" class="three-D-carousel-container loading">
+  Synchronizing Inventory...
 </div>
+
+<script>
+  (function () {
+    const carouselContainer = document.getElementById("pxl-3d-car-carousel");
+    const N8N_ENDPOINT_URL =
+      "https://n8n.somsritshirt.com/webhook/33dd5373-6a65-424f-920c-dfaef4cb5482";
+
+    // 1. Asynchronous Data Fetch
+    fetch(N8N_ENDPOINT_URL)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`HTTP Matrix Error: ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        render3DCarousel(data);
+        // Delay engine initialization slightly to allow DOM paint
+        requestAnimationFrame(() =>
+          setTimeout(initializeReverseSynchronization, 100),
+        );
+      })
+      .catch((error) => {
+        console.error("n8n Sync Failure:", error);
+        if (carouselContainer) {
+          carouselContainer.innerHTML =
+            "Backend sync interrupted. Check n8n webhook routing.";
+          carouselContainer.classList.remove("loading");
+        }
+      });
+
+    // 2. DOM Generation
+    function render3DCarousel(carData) {
+      carouselContainer.innerHTML = "";
+      carouselContainer.classList.remove("loading");
+
+      const track = document.createElement("div");
+      track.classList.add("three-D-carousel-track");
+
+      carData.forEach((car) => {
+        track.appendChild(create3DCard(car));
+      });
+
+      carouselContainer.appendChild(track);
+    }
+
+    function create3DCard(car) {
+      const card = document.createElement("div");
+      card.classList.add("three-D-hover-car-carousel-card");
+
+      // Implementing fallbacks ensuring structural integrity if n8n omits data
+      const coverImg =
+        car.coverImage ||
+        "https://targacar.com/wp-content/uploads/card-scaled.jpeg";
+      const logoImg =
+        car.logoImage || "https://targacar.com/wp-content/uploads/popup-1.png";
+      const charImg =
+        car.characterImage ||
+        "https://targacar.com/wp-content/uploads/text-1.png";
+      const currency = car.currency || "฿";
+      const amount = car.amount || "0";
+      const duration = car.perDay || "/ day";
+
+      card.innerHTML = `
+        <div class="three-D-hover-car-carousel-wrapper">
+          <img src="${coverImg}" class="three-D-hover-car-carousel-cover-image" />
+        </div>
+        <img src="${logoImg}" class="three-D-hover-car-carousel-logo" />
+        <img src="${charImg}" class="three-D-hover-car-carousel-character" />
+        <div class="three-D-hover-car-carousel-price-tag">
+          <span class="three-D-hover-car-carousel-currency">${currency}</span>
+          <span class="three-D-hover-car-carousel-amount">${amount}</span>
+          <span class="three-D-hover-car-carousel-per-day">${duration}</span>
+        </div>
+      `;
+      return card;
+    }
+
+    // 3. Autonomous Engine: Reverse Progression (Left-to-Right Swipe)
+    function initializeReverseSynchronization() {
+      const track = document.querySelector(".three-D-carousel-track");
+      if (!track) return;
+
+      let autoScrollInterval;
+      const AUTO_SCROLL_DELAY_MS = 3500;
+
+      // Pre-flight: For Left-to-Right swipe, we must start at the far right.
+      track.scrollLeft = track.scrollWidth;
+
+      const advanceCarousel = () => {
+        const cards = track.querySelectorAll(
+          ".three-D-hover-car-carousel-card",
+        );
+        if (cards.length < 2) return;
+
+        // Calculate exact scroll vector dynamically (Card width + Gap)
+        const scrollAmount = cards[1].offsetLeft - cards[0].offsetLeft;
+
+        // If we hit the absolute left margin (0), jump back to far right
+        if (track.scrollLeft <= 5) {
+          track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
+        } else {
+          // Decrement scroll position to move view left (items appear to move right)
+          track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
+      };
+
+      const startAutoScroll = () => {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(advanceCarousel, AUTO_SCROLL_DELAY_MS);
+      };
+
+      const stopAutoScroll = () => {
+        clearInterval(autoScrollInterval);
+      };
+
+      // Engine Ignition
+      startAutoScroll();
+
+      // UX Interference Overrides (Stop on interaction, resume on release)
+      track.addEventListener("mouseenter", stopAutoScroll);
+      track.addEventListener("mouseleave", startAutoScroll);
+      track.addEventListener("touchstart", stopAutoScroll, { passive: true });
+      track.addEventListener("touchend", startAutoScroll, { passive: true });
+    }
+  })();
+</script>
