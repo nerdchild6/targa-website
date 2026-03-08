@@ -62,11 +62,13 @@
       const coverImg =
         car.coverImage ||
         "https://targacar.com/wp-content/uploads/card-scaled.jpeg";
-      const logoImg =
-        car.logoImage || "https://targacar.com/wp-content/uploads/popup-1.png";
-      const charImg =
-        car.characterImage ||
-        "https://targacar.com/wp-content/uploads/text-1.png";
+
+      const logoImage =
+        car.logoImage ?? "https://targacar.com/wp-content/uploads/popup-1.png";
+
+      const carName = car.carName || "Ferrari 488";
+      const carBrand = car.carBrand || "Ferrari";
+
       const currency = car.currency || "฿";
       const amount = car.amount || "0";
       const duration = car.perDay || "/ day";
@@ -75,9 +77,13 @@
         <div class="three-D-hover-car-carousel-wrapper">
           <img src="${coverImg}" class="three-D-hover-car-carousel-cover-image" />
         </div>
-        <img src="${logoImg}" class="three-D-hover-car-carousel-logo" />
-        <img src="${charImg}" class="three-D-hover-car-carousel-character" />
-        <div class="three-D-hover-car-carousel-price-tag">
+
+      <img src="${logoImage}" class="three-D-hover-car-carousel-logo" />
+        
+        <h2 class="three-D-hover-car-carousel-character-text">${carName}</h2>
+        <h3 class="three-D-hover-car-carousel-logo-text">${carBrand}</h3>
+        
+        <div class="three-D-hover-car-carousel-price-layout">
           <span class="three-D-hover-car-carousel-currency">${currency}</span>
           <span class="three-D-hover-car-carousel-amount">${amount}</span>
           <span class="three-D-hover-car-carousel-per-day">${duration}</span>
@@ -91,7 +97,6 @@
       if (!track) return;
 
       const cards = track.querySelectorAll(".three-D-hover-car-carousel-card");
-
       if (cards.length < 2) return;
 
       let autoScrollInterval;

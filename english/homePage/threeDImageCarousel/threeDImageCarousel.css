@@ -81,10 +81,10 @@
     width: 100%;
     height: 100%;
     top: 0;
-    z-index: -1;
+    z-index: -1; 
     background: #fff4e4; 
     border-radius: 30px;
-    overflow: hidden;
+    overflow: hidden; 
     box-shadow:
       rgba(0, 0, 0, 0.05) 0px 14px 28px,
       rgba(0, 0, 0, 0.02) 0px 10px 10px;
@@ -92,7 +92,6 @@
 
   .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper {
     transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
-    /* FIX 1: Softened the shadow dramatically for a diffused look */
     box-shadow: 0px 30px 40px -15px rgba(239, 180, 112, 0.3);
   }
 
@@ -108,7 +107,6 @@
     left: 0;
   }
 
-  /* FIX 1: Reduced gradient opacity to remove the solid block effect */
   .three-D-hover-car-carousel-wrapper::before {
     top: 0;
     height: 100%;
@@ -140,91 +138,159 @@
     height: 120px;
   }
 
-  .three-D-hover-car-carousel-character {
-    width: 100%;
-    transition: transform 0.5s;
-    position: absolute;
-    bottom: 10px;
-    pointer-events: none;
-  }
-
-  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character {
-    transform: translate3d(0%, -50px, 100px);
-  }
-
   .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-cover-image {
     opacity: 0.15; 
   }
 
   .three-D-hover-car-carousel-logo {
+  width: 100%;
+  opacity: 0;
+  transition: all 0.5s;
+  filter: drop-shadow(2px 2px 2px #000);
+  position: absolute;
+  z-index: -1;
+}
+
+.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
+  opacity: 1;
+  transform: translate3d(5%, -20%, 670px);
+}
+
+  /* --- HIGH-FIDELITY DYNAMIC TYPOGRAPHY --- */
+
+  /* Car Name: Heavy Orange Text, Solid Black Outer Border */
+  .three-D-hover-car-carousel-character-text {
     width: 100%;
-    opacity: 0;
-    transition: all 0.5s;
-    filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2));
     position: absolute;
-    z-index: -1;
+    bottom: 85px; 
+    text-align: center;
+    font-size: 38px;
+    font-weight: 900;
+    /* "Cooper Black" perfectly matches the bubbly/heavy serif from your screenshot */
+    font-family: "Cooper Black", "Arial Black", "Rockwell", serif; 
+    color: #ff8c00; /* Vivid Orange matching the original asset */
+    
+    /* 8-Axis Shadow Matrix: Creates a perfect exterior stroke without thinning the text */
+    text-shadow: 
+      -2px -2px 0 #000, 
+       0   -2px 0 #000, 
+       2px -2px 0 #000, 
+       2px  0   0 #000, 
+       2px  2px 0 #000, 
+       0    2px 0 #000, 
+      -2px  2px 0 #000, 
+      -2px  0   0 #000,
+       0    6px 10px rgba(0,0,0,0.4); /* Floating 3D drop shadow */
+
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
+    z-index: 20; /* Layer 2 */
+    margin: 0;
   }
 
-  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-    opacity: 1;
-    transform: translate3d(5%, -20%, 670px);
+  /* Car Brand: Solid Black Text, Solid White Outer Border */
+  .three-D-hover-car-carousel-logo-text {
+    width: 100%;
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-family: "Georgia", "Times New Roman", serif;
+    color: #111; 
+    
+    /* 8-Axis Shadow Matrix for the White Border */
+    text-shadow: 
+      -1.5px -1.5px 0 #fff, 
+       0     -1.5px 0 #fff, 
+       1.5px -1.5px 0 #fff, 
+       1.5px  0     0 #fff, 
+       1.5px  1.5px 0 #fff, 
+       0      1.5px 0 #fff, 
+      -1.5px  1.5px 0 #fff, 
+      -1.5px  0     0 #fff,
+       0      4px   6px rgba(0,0,0,0.3); /* Ensures white border is visible against cream background */
+    
+    /* FIX: Always permanently visible */
+    opacity: 1; 
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    z-index: 40; /* Layer 3 */
+    margin: 0;
   }
 
-  /* --- Price Tag 3D Styling --- */
-  .three-D-hover-car-carousel-price-tag {
+  /* 3D Hover Projections for Text */
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character-text {
+    transform: translate3d(0%, -50px, 100px);
+  }
+
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo-text {
+    transform: translate3d(0%, -30px, 120px); 
+  }
+
+
+  /* --- Decoupled Price Tag Architecture --- */
+  .three-D-hover-car-carousel-price-layout {
     position: absolute;
     bottom: 25px;
-    left: 50%;
-    transform: translate3d(-50%, 0, 0);
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-    z-index: 10;
+    left: 0;
+    right: 0; 
     text-align: center;
-    font-family: "Segoe UI", Arial, sans-serif;
     pointer-events: none;
     width: 100%; 
   }
 
-  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-currency {
+  .three-D-hover-car-carousel-currency,
+  .three-D-hover-car-carousel-amount,
+  .three-D-hover-car-carousel-per-day {
+    display: inline-block;
+    position: relative;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+
+  .three-D-hover-car-carousel-currency {
     font-size: 24px;
     font-weight: 700;
     color: #e67e22; 
     vertical-align: top;
     margin-right: 2px;
+    z-index: 50; 
   }
 
-  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-amount {
+  .three-D-hover-car-carousel-amount {
     font-size: 30px;
     font-weight: 800;
     color: #2c3e50; 
     text-shadow: 0 4px 10px rgba(255, 255, 255, 0.8);
     line-height: 0.9;
+    z-index: 50; 
   }
 
-  .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-per-day {
+  .three-D-hover-car-carousel-per-day {
     font-size: 14px;
     font-weight: 700;
     color: #7f8c8d; 
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-left: 6px;
+    z-index: 10; 
   }
 
-  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-price-tag {
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-currency,
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-amount,
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-per-day {
     opacity: 1;
-    transform: translate3d(-50%, 0, 150px);
+    transform: translate3d(0, 0, 150px);
   }
 
-  /* --- FIX 2: Responsive Architecture for Mobile & Tablets --- */
+  /* --- Responsive Architecture --- */
   @media (max-width: 1024px) {
     .three-D-carousel-track {
       gap: 50px;
       padding: 80px 30px;
-    }
-    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-      /* Reduced projection depth for tablets */
-      transform: translate3d(5%, -15%, 500px);
     }
   }
 
@@ -234,30 +300,34 @@
       padding: 60px 20px;
     }
     .three-D-hover-car-carousel-card {
-      /* Scaled down card physical size */
       flex: 0 0 240px;
       height: 310px;
       padding: 0 20px;
       padding-top: 40px;
     }
-    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-      /* Significantly reduced Z-axis projection to prevent viewport clipping */
-      transform: translate3d(5%, -10%, 380px);
+    /* Dynamic Typography Scale for Mobile */
+    .three-D-hover-car-carousel-character-text {
+      font-size: 30px;
+      bottom: 75px;
     }
-    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character {
-      transform: translate3d(0%, -25px, 60px);
+    .three-D-hover-car-carousel-logo-text {
+      font-size: 20px;
+      bottom: 45px;
     }
-    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-price-tag {
-      transform: translate3d(-50%, 0, 100px);
+    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo-text {
+      transform: translate3d(0%, -15px, 80px);
     }
-    .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-amount {
-      font-size: 24px;
+    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character-text {
+      transform: translate3d(0%, -30px, 60px);
     }
-    .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-currency {
-      font-size: 18px;
+    
+    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-currency,
+    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-amount,
+    .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-per-day {
+      transform: translate3d(0, 0, 100px);
     }
-    .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-per-day {
-      font-size: 12px;
-    }
+    .three-D-hover-car-carousel-amount { font-size: 24px; }
+    .three-D-hover-car-carousel-currency { font-size: 18px; }
+    .three-D-hover-car-carousel-per-day { font-size: 12px; }
   }
 </style>
