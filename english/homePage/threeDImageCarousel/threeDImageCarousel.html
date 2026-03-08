@@ -7,18 +7,26 @@
   (function () {
     const carouselContainer = document.getElementById("pxl-3d-car-carousel");
     const N8N_ENDPOINT_URL =
-      "https://n8n.somsritshirt.com/webhook/33dd5373-6a65-424f-920c-dfaef4cb5482";
+      "https://n8n.somsritshirt.com/webhook/2427e01b-6aed-436d-95b6-5cf141b7fe42";
 
-    // 1. Asynchronous Data Fetch
-    fetch(N8N_ENDPOINT_URL)
+    // FIX 3: Cache-busting parameter added to force a fresh payload from n8n
+    const timestamp = new Date().getTime();
+
+    fetch(`${N8N_ENDPOINT_URL}?t=${timestamp}`)
       .then((response) => {
         if (!response.ok)
           throw new Error(`HTTP Matrix Error: ${response.status}`);
         return response.json();
       })
-      .then((data) => {
-        render3DCarousel(data);
-        // Delay engine initialization slightly to allow DOM paint
+      .then((rawData) => {
+        // FIX 3 & 2: Payload Normalization.
+        // Handles wrapped n8n objects e.g., [{ "json": { amount: 999 } }] vs flat structures
+        let normalizedData = Array.isArray(rawData) ? rawData : [rawData];
+        if (normalizedData.length > 0 && normalizedData[0].json) {
+          normalizedData = normalizedData.map((item) => item.json);
+        }
+
+        render3DCarousel(normalizedData);
         requestAnimationFrame(() =>
           setTimeout(initializeReverseSynchronization, 100),
         );
@@ -32,13 +40,18 @@
         }
       });
 
-    // 2. DOM Generation
     function render3DCarousel(carData) {
+      // Strictly clears the container to prevent Elementor re-render ghosting
       carouselContainer.innerHTML = "";
       carouselContainer.classList.remove("loading");
 
       const track = document.createElement("div");
       track.classList.add("three-D-carousel-track");
+
+      // FIX 2: If there is only one car, apply the centering class
+      if (carData.length === 1) {
+        track.classList.add("single-item");
+      }
 
       carData.forEach((car) => {
         track.appendChild(create3DCard(car));
@@ -51,7 +64,7 @@
       const card = document.createElement("div");
       card.classList.add("three-D-hover-car-carousel-card");
 
-      // Implementing fallbacks ensuring structural integrity if n8n omits data
+      // FIX 3: Strict parameter mapping from n8n. If n8n sends "amount", it extracts it.
       const coverImg =
         car.coverImage ||
         "https://targacar.com/wp-content/uploads/card-scaled.jpeg";
@@ -79,31 +92,26 @@
       return card;
     }
 
-    // 3. Autonomous Engine: Reverse Progression (Left-to-Right Swipe)
     function initializeReverseSynchronization() {
       const track = document.querySelector(".three-D-carousel-track");
       if (!track) return;
 
+      const cards = track.querySelectorAll(".three-D-hover-car-carousel-card");
+
+      // FIX 2: Autoscroll Engine gracefully shuts down if there's only 1 item to scroll.
+      if (cards.length < 2) return;
+
       let autoScrollInterval;
       const AUTO_SCROLL_DELAY_MS = 3500;
 
-      // Pre-flight: For Left-to-Right swipe, we must start at the far right.
       track.scrollLeft = track.scrollWidth;
 
       const advanceCarousel = () => {
-        const cards = track.querySelectorAll(
-          ".three-D-hover-car-carousel-card",
-        );
-        if (cards.length < 2) return;
-
-        // Calculate exact scroll vector dynamically (Card width + Gap)
         const scrollAmount = cards[1].offsetLeft - cards[0].offsetLeft;
 
-        // If we hit the absolute left margin (0), jump back to far right
         if (track.scrollLeft <= 5) {
           track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
         } else {
-          // Decrement scroll position to move view left (items appear to move right)
           track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         }
       };
@@ -117,10 +125,8 @@
         clearInterval(autoScrollInterval);
       };
 
-      // Engine Ignition
       startAutoScroll();
 
-      // UX Interference Overrides (Stop on interaction, resume on release)
       track.addEventListener("mouseenter", stopAutoScroll);
       track.addEventListener("mouseleave", startAutoScroll);
       track.addEventListener("touchstart", stopAutoScroll, { passive: true });

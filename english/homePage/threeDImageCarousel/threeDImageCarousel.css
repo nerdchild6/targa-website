@@ -4,23 +4,30 @@
     width: 100%;
     position: relative;
     user-select: none;
-    background: radial-gradient(circle at center, #efb470 0%, #fff4e4 100%);
+    /* Updated Theme: Seamlessly blends with your website's light background */
+    background: transparent; 
     border-radius: 15px;
+    display: flex;
+    justify-content: center; /* Centers the card if there is only 1 */
   }
 
-  /* * CRITICAL ARCHITECTURAL NOTE: 
-   * Padding-top and padding-bottom must accommodate the max Z-axis transform.
-   * If reduced, the 3D pop-out elements will clip against the overflow bounds.
-   */
   .three-D-carousel-track {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     width: 100%;
-    gap: 30px;
-    padding: 100px 30px; 
+    /* FIX 4: Increased gap from 30px to 80px to prevent proximity clipping */
+    gap: 80px;
+    padding: 100px 40px; 
     scrollbar-width: none;
     align-items: center;
+    /* Centers content when only 1 item exists */
+    justify-content: flex-start; 
+  }
+  
+  /* Fallback to center single items cleanly */
+  .three-D-carousel-track.single-item {
+    justify-content: center;
   }
 
   .three-D-carousel-track::-webkit-scrollbar {
@@ -32,7 +39,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #333;
+    color: #efb470; /* Themed loading text */
     font-size: 20px;
     font-weight: bold;
     font-family: "Segoe UI", Arial, sans-serif;
@@ -45,7 +52,7 @@
   }
 
   .three-D-hover-car-carousel-card {
-    flex: 0 0 300px; /* Lock dimension for track indexing */
+    flex: 0 0 300px;
     scroll-snap-align: center;
     height: 380px;
     position: relative;
@@ -57,6 +64,15 @@
     perspective: 2500px;
     cursor: pointer;
     border-radius: 30px;
+    
+    /* FIX 4: Establishes a baseline z-index */
+    z-index: 1;
+    transition: z-index 0.5s;
+  }
+
+  /* FIX 4: Elevates the card to the top of the stacking context on hover */
+  .three-D-hover-car-carousel-card:hover {
+    z-index: 100;
   }
 
   .three-D-hover-car-carousel-cover-image {
@@ -73,16 +89,18 @@
     height: 100%;
     top: 0;
     z-index: -1;
-    background: #000;
+    /* FIX 1: Themed Base Color (Cream) */
+    background: #fff4e4; 
     border-radius: 30px;
     box-shadow:
-      rgba(0, 0, 0, 0.25) 0px 14px 28px,
-      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+      rgba(0, 0, 0, 0.1) 0px 14px 28px,
+      rgba(0, 0, 0, 0.05) 0px 10px 10px;
   }
 
   .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-wrapper {
     transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
-    box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+    /* Softened the shadow for light theme */
+    box-shadow: 0px 25px 30px -10px rgba(239, 180, 112, 0.6);
   }
 
   .three-D-hover-car-carousel-wrapper::before,
@@ -95,19 +113,17 @@
     border-radius: 30px;
     position: absolute;
     left: 0;
-    box-shadow:
-      rgba(0, 0, 0, 0.25) 0px 14px 28px,
-      rgba(0, 0, 0, 0.22) 0px 10px 10px;
   }
 
+  /* FIX 1: Themed Gradients (Light Orange Creame) */
   .three-D-hover-car-carousel-wrapper::before {
     top: 0;
     height: 100%;
     background-image: linear-gradient(
       to top,
       transparent 46%,
-      rgba(12, 13, 19, 0.5) 68%,
-      rgba(12, 13, 19) 97%
+      rgba(239, 180, 112, 0.5) 68%,
+      rgba(239, 180, 112, 0.9) 97%
     );
   }
 
@@ -117,8 +133,8 @@
     background-image: linear-gradient(
       to bottom,
       transparent 46%,
-      rgba(12, 13, 19, 0.5) 68%,
-      rgba(12, 13, 19) 97%
+      rgba(239, 180, 112, 0.6) 68%,
+      rgba(239, 180, 112, 1) 97%
     );
   }
 
@@ -144,14 +160,15 @@
   }
 
   .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-cover-image {
-    opacity: 0.3;
+    opacity: 0.15; /* Increased transparency so dark cars don't hide the light background */
   }
 
   .three-D-hover-car-carousel-logo {
     width: 100%;
     opacity: 0;
     transition: all 0.5s;
-    filter: drop-shadow(2px 2px 2px #000);
+    /* Softened logo drop shadow for light theme */
+    filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2));
     position: absolute;
     z-index: -1;
     pointer-events: none;
@@ -162,7 +179,7 @@
     transform: translate3d(5%, -20%, 670px);
   }
 
-  /* --- Price Tag 3D Styling --- */
+  /* --- Price Tag 3D Styling (Darkened for Light Theme) --- */
   .three-D-hover-car-carousel-price-tag {
     position: absolute;
     bottom: 25px;
@@ -174,12 +191,13 @@
     text-align: center;
     font-family: "Segoe UI", Arial, sans-serif;
     pointer-events: none;
+    width: 100%; /* Prevents text wrapping issues */
   }
 
   .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-currency {
     font-size: 24px;
     font-weight: 700;
-    color: #ffffff;
+    color: #e67e22; /* Darker orange */
     vertical-align: top;
     margin-right: 2px;
   }
@@ -187,15 +205,15 @@
   .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-amount {
     font-size: 30px;
     font-weight: 800;
-    color: #ffffff;
-    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    color: #2c3e50; /* Dark gray, highly legible */
+    text-shadow: 0 4px 10px rgba(255, 255, 255, 0.8);
     line-height: 0.9;
   }
 
   .three-D-hover-car-carousel-price-tag .three-D-hover-car-carousel-per-day {
     font-size: 14px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+    color: #7f8c8d; /* Medium gray */
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-left: 6px;
