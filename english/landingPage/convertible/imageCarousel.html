@@ -20,6 +20,48 @@
     display: none; /* Hide scrollbars for a clean look (Chrome/Safari) */
   }
 
+  /* --- Navigation Arrow Buttons --- */
+  .carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .carousel-nav-btn:hover {
+    background: rgba(255, 215, 0, 0.9); /* Gold hover to match your brand */
+    color: black;
+    border-color: #ffd700;
+  }
+
+  .prev-btn {
+    left: 15px;
+  }
+
+  .next-btn {
+    right: 15px;
+  }
+
+  /* Hide arrows on touch devices (they will swipe instead) */
+  @media (hover: none) and (pointer: coarse) {
+    .carousel-nav-btn {
+      display: none;
+    }
+  }
+
   /* --- Column Styles (Groups top and bottom images) --- */
   .car-column {
     flex: 0 0 calc((100% / 3) - (20px / 3)); /* 3 columns visible */
@@ -170,6 +212,7 @@
       // Calculate total columns based on the row with the most cars
       const totalCols = Math.max(row1Cars.length, row2Cars.length);
 
+      // Create main scrolling track
       const track = document.createElement("div");
       track.classList.add("car-carousel-track");
 
@@ -191,6 +234,20 @@
       }
 
       carouselContainer.appendChild(track);
+
+      // Create Navigation Arrows
+      const leftBtn = document.createElement("button");
+      leftBtn.classList.add("carousel-nav-btn", "prev-btn");
+      leftBtn.innerHTML = "&#10094;"; // HTML entity for '<'
+      leftBtn.setAttribute("aria-label", "Previous");
+
+      const rightBtn = document.createElement("button");
+      rightBtn.classList.add("carousel-nav-btn", "next-btn");
+      rightBtn.innerHTML = "&#10095;"; // HTML entity for '>'
+      rightBtn.setAttribute("aria-label", "Next");
+
+      carouselContainer.appendChild(leftBtn);
+      carouselContainer.appendChild(rightBtn);
     }
 
     // Helper to generate cell HTML
@@ -216,27 +273,33 @@
       return cell;
     }
 
-    // 3. Autonomous Progression Engine (Left to Right)
+    // 3. Autonomous Progression & Click Engine
     function initializeSynchronization() {
       const track = document.querySelector(".car-carousel-track");
+      const prevBtn = document.querySelector(".prev-btn");
+      const nextBtn = document.querySelector(".next-btn");
+
       if (!track) return;
 
-      // INITIALIZATION: Set scroll position to the far right so we can swipe left
+      // INITIALIZATION: Set scroll position to the far right
       track.scrollLeft = track.scrollWidth;
 
       let autoScrollInterval;
       const AUTO_SCROLL_DELAY_MS = 4000;
 
-      const advanceCarousel = () => {
+      // Calculate dynamic step based on column size + gap
+      const getScrollAmount = () => {
         const cols = track.querySelectorAll(".car-column");
-        let scrollAmount = track.clientWidth / 3; // Fallback default
-
-        // Dynamically calculate precise column width + gap based on active CSS Media Query
         if (cols.length > 1) {
-          scrollAmount = cols[1].offsetLeft - cols[0].offsetLeft;
+          return cols[1].offsetLeft - cols[0].offsetLeft;
         }
+        return track.clientWidth / 3; // Fallback
+      };
 
-        // Trigger native smooth scrolls on the master track
+      // Action: Move View Left (Content moves right)
+      const scrollLeftAction = () => {
+        const scrollAmount = getScrollAmount();
+        // If at left boundary, rewind to right
         if (track.scrollLeft <= 5) {
           track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
         } else {
@@ -244,9 +307,41 @@
         }
       };
 
+      // Action: Move View Right (Content moves left)
+      const scrollRightAction = () => {
+        const scrollAmount = getScrollAmount();
+        // If at right boundary, rewind to left
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
+          track.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          track.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        }
+      };
+
+      // Attach button events
+      if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+          stopAutoScroll();
+          scrollLeftAction();
+          startAutoScroll(); // Restart timer to avoid double scroll
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+          stopAutoScroll();
+          scrollRightAction();
+          startAutoScroll(); // Restart timer
+        });
+      }
+
       const startAutoScroll = () => {
         clearInterval(autoScrollInterval);
-        autoScrollInterval = setInterval(advanceCarousel, AUTO_SCROLL_DELAY_MS);
+        // By default, auto-scroll shifts view left (content goes right)
+        autoScrollInterval = setInterval(
+          scrollLeftAction,
+          AUTO_SCROLL_DELAY_MS,
+        );
       };
 
       const stopAutoScroll = () => {
@@ -256,7 +351,7 @@
       // Initialize Autonomous loop
       startAutoScroll();
 
-      // C. UX Safety Overrides
+      // UX Safety Overrides (pause on hover/touch)
       carouselContainer.addEventListener("mouseenter", stopAutoScroll);
       carouselContainer.addEventListener("mouseleave", startAutoScroll);
       carouselContainer.addEventListener("touchstart", stopAutoScroll, {
