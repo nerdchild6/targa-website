@@ -1,0 +1,372 @@
+<!-- 
+  INSTRUCTIONS: 
+  Paste this entire code block into an Elementor "HTML" Widget.
+-->
+
+<!-- IMPORT THAI FONT (PROMPT) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* --- BASE CONTAINER --- */
+  .pxl-custom-blog-wrapper {
+    font-family: "Prompt", sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20vh;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* --- GRID ARCHITECTURE --- */
+  .pxl-blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    row-gap: 50px;
+    margin-bottom: 50px;
+  }
+
+  /* Responsive Breakpoint */
+  @media (max-width: 768px) {
+    .pxl-blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* --- CARD COMPONENT --- */
+  .pxl-blog-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pxl-blog-card:hover .pxl-img-element {
+    transform: scale(1.05);
+  }
+
+  /* Image Aspect Ratio Container (16:9) */
+  .pxl-img-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+  }
+
+  .pxl-img-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Meta Data (Date) */
+  .pxl-blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .pxl-blog-meta svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  /* Typography */
+  .pxl-blog-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.4;
+    margin: 0 0 15px 0;
+    transition: color 0.3s ease;
+  }
+
+  .pxl-blog-card:hover .pxl-blog-title {
+    color: #c5a880; /* Hover color derived from your pagination active state */
+  }
+
+  .pxl-blog-excerpt {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 300;
+    /* Truncate text after 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* --- PAGINATION CONTROLS --- */
+  .pxl-pagination-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .pxl-page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    background: transparent;
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pxl-page-btn:hover {
+    border-color: #c5a880;
+    color: #c5a880;
+  }
+
+  .pxl-page-btn.active {
+    background-color: #c5a880;
+    border-color: #c5a880;
+    color: #fff;
+  }
+
+  .pxl-page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>
+
+<div class="pxl-custom-blog-wrapper">
+  <!-- Grid Injection Target -->
+  <div id="pxl-blog-grid-target" class="pxl-blog-grid"></div>
+
+  <!-- Pagination Injection Target -->
+  <div id="pxl-pagination-target" class="pxl-pagination-container"></div>
+</div>
+
+<script>
+  /**
+   * Data Payload
+   * Replace image URLs with actual paths from your WordPress Media Library.
+   * If wiring this to n8n or WP REST API, replace this static array with a fetch() payload.
+   */
+  const blogData = [
+    {
+      id: 1,
+      image:
+        "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "วิธีการดูแลรักษารถเช่าเบื้องต้น",
+      excerpt:
+        "การใช้บริการรถเช่ากำลังได้รับความนิยมมากขึ้น ไม่ว่าจะเป็นเพื่อการท่องเที่ยว การเดินทางเพื่อธุรกิจ หรืองานพิเศษต่าง ๆ การที่ผู้เช่ารับผิดชอบและรู้จักดูแลรักษารถเช่าอย่างถูกวิธี ไม่...",
+      url: "#",
+    },
+    {
+      id: 2,
+      image:
+        "https://images.unsplash.com/photo-1549314486-d922f281e592?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title:
+        "เช่ารถหรูครั้งแรกไม่ต้องเกร็ง! ขั้นตอนการรับรถและตรวจเช็กสภาพแบบจับมือทำ",
+      excerpt:
+        "หลายคนอาจรู้สึกตื่นเต้นหรือกังวลเมื่อต้องเช่ารถหรูครั้งแรก เพราะไม่แน่ใจว่าต้องเตรียมอะไรบ้างและขั้นตอนการรับรถจะยุ่งยากหรือไม่ ความจริงแล้วการเช่ารถหรูไม่ซับซ้อนอย่างที่คิด หากคุ...",
+      url: "#",
+    },
+    {
+      id: 3,
+      image:
+        "https://images.unsplash.com/photo-1632230113110-381c81881fb1?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "เช่ารถ Alphard สำหรับผู้บริหารขั้นสูง",
+      excerpt:
+        "เมื่อพูดถึงรถสำหรับผู้บริหารหรือบุคคลสำคัญที่ต้องการความสะดวกสบายและสอดคล้องกับภาพลักษณ์ รุ่นรถที่หลายคนนึกถึงคือ Toyota Alphard ซึ่งเป็นรถตู้ VIP ระดับพรีเมียมที่ได้รับความนิยมอย่างสูงทั้งใน...",
+      url: "#",
+    },
+    {
+      id: 4,
+      image:
+        "https://images.unsplash.com/photo-1503376762361-9c12217c2773?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title:
+        "Luxe Car Rent แตกต่างจากที่อื่นอย่างไร? เบื้องหลังบริการระดับพรีเมียมและรถคุณภาพ",
+      excerpt:
+        "การเช่ารถหรูเป็นการเลือกสำหรับโอกาสพิเศษในชีวิตหรือผู้มีรสนิยมลักซ์ชัวรี่ที่สมบูรณ์แบบ และยังเป็นการมอบประสบการณ์ที่เต็มไปด้วยความสะดวก ความมั่นใจ และความพิเศษเหนือระดับ หากคุณกำลังมอ...",
+      url: "#",
+    },
+    {
+      id: 5,
+      image:
+        "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "A Day with Supercar: สัมผัสไลฟ์สไตล์เจ้าของ Supercar ในหนึ่งวัน",
+      excerpt:
+        "หลายคนอาจฝันถึงโมเมนต์ที่จะได้ใช้ชีวิตและขับซูเปอร์คาร์ ได้ขับรถหรูบนถนน และสัมผัสกับความเร้าใจของเครื่องยนต์ระดับโลกซึ่งเป็นประสบการณ์ที่น่าจดจำ และปัจจุบันความฝันนั้นไม่จำเป็น...",
+      url: "#",
+    },
+    {
+      id: 6,
+      image:
+        "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "ขับรถหรูเที่ยวหัวหิน: 3 วัน 2 คืนกับ Playlist เพลงและรถคู่ใจ",
+      excerpt:
+        "หัวหินเป็นหนึ่งในจุดหมายปลายทางยอดนิยมของคนเมืองที่อยากพักผ่อนใกล้กรุงเทพฯ แค่ 2 ชั่วโมงกว่า ๆ คุณก็สามารถหลีกหนีความวุ่นวายไปสัมผัสบรรยากาศทะเลสุดชิลได้แล้ว แต่ถ้าจะให้การเดินทางครั้...",
+      url: "#",
+    },
+    {
+      id: 7,
+      image:
+        "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "ไอเดียเช่ารถหรูพร้อมคนขับพาไปดินเนอร์สุดโรแมนติก",
+      excerpt:
+        "ในวาระหรือโอกาสพิเศษ ไม่ว่าจะเป็นวันครบรอบ วันเกิด หรือแม้แต่การขอแต่งงาน การสร้างบรรยากาศที่โรแมนติกถือเป็นสิ่งสำคัญที่จะทำให้ความทรงจำนั้นมีคุณค่า หนึ่งในไอเดียที่กำลังได้รั...",
+      url: "#",
+    },
+    {
+      id: 8,
+      image:
+        "https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1600&auto=format&fit=crop",
+      date: "September 2, 2025",
+      title: "เช่ารถ Supercar ถ่าย IG ต้องเตรียมตัวและมีขั้นตอนอย่างไร?",
+      excerpt:
+        "ยุคนี้โซเชียลมีเดียอย่าง Instagram เป็นพื้นที่โชว์ไลฟ์สไตล์และสร้างสรรค์คอนเทนต์สำหรับหลายแบรนด์ การเช่ารถ Supercar ไม่ว่าจะเป็น Ferrari, Lamborghini, Porsche หรือ McLaren ถ่ายรูปลง...",
+      url: "#",
+    },
+  ];
+
+  /**
+   * State Management
+   */
+  const state = {
+    currentPage: 1,
+    itemsPerPage: 8, // Set to 8 to match your design screenshot
+    totalItems: blogData.length,
+  };
+
+  /**
+   * SVG Icon Asset
+   */
+  const calendarIcon = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM19 8H5V6H19V8ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z"/></svg>`;
+
+  /**
+   * DOM Elements
+   */
+  const gridTarget = document.getElementById("pxl-blog-grid-target");
+  const paginationTarget = document.getElementById("pxl-pagination-target");
+
+  /**
+   * Core Render Function for the Grid
+   */
+  function renderGrid(page) {
+    gridTarget.innerHTML = ""; // Clear existing DOM
+
+    // Calculate pagination slice
+    const startIndex = (page - 1) * state.itemsPerPage;
+    const endIndex = startIndex + state.itemsPerPage;
+    const paginatedItems = blogData.slice(startIndex, endIndex);
+
+    // Document Fragment for performance optimization
+    const fragment = document.createDocumentFragment();
+
+    paginatedItems.forEach((post) => {
+      const article = document.createElement("a");
+      article.href = post.url;
+      article.className = "pxl-blog-card";
+
+      article.innerHTML = `
+        <div class="pxl-img-wrapper">
+          <img src="${post.image}" alt="${post.title}" class="pxl-img-element" loading="lazy">
+        </div>
+        <div class="pxl-blog-meta">
+          ${calendarIcon}
+          <span>${post.date}</span>
+        </div>
+        <h3 class="pxl-blog-title">${post.title}</h3>
+        <p class="pxl-blog-excerpt">${post.excerpt}</p>
+      `;
+
+      fragment.appendChild(article);
+    });
+
+    gridTarget.appendChild(fragment);
+  }
+
+  /**
+   * Core Render Function for Pagination Controls
+   */
+  function renderPagination() {
+    paginationTarget.innerHTML = ""; // Clear existing DOM
+
+    const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
+    if (totalPages <= 1) return; // Do not render if only 1 page
+
+    // Previous Button
+    const prevBtn = document.createElement("button");
+    prevBtn.className = "pxl-page-btn";
+    prevBtn.innerHTML = "&lsaquo;";
+    prevBtn.disabled = state.currentPage === 1;
+    prevBtn.addEventListener("click", () => changePage(state.currentPage - 1));
+    paginationTarget.appendChild(prevBtn);
+
+    // Numbered Buttons
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.className = `pxl-page-btn ${i === state.currentPage ? "active" : ""}`;
+      pageBtn.innerText = i;
+      pageBtn.addEventListener("click", () => changePage(i));
+      paginationTarget.appendChild(pageBtn);
+    }
+
+    // Next Button
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "pxl-page-btn";
+    nextBtn.innerHTML = "&rsaquo;";
+    nextBtn.disabled = state.currentPage === totalPages;
+    nextBtn.addEventListener("click", () => changePage(state.currentPage + 1));
+    paginationTarget.appendChild(nextBtn);
+  }
+
+  /**
+   * State Mutation and Re-render
+   */
+  function changePage(newPage) {
+    const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
+    if (newPage < 1 || newPage > totalPages) return;
+
+    state.currentPage = newPage;
+    renderGrid(state.currentPage);
+    renderPagination();
+
+    // Smooth scroll back to top of grid
+    gridTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /**
+   * Initialize App
+   */
+  document.addEventListener("DOMContentLoaded", () => {
+    renderGrid(state.currentPage);
+    renderPagination();
+  });
+</script>
