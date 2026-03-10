@@ -142,6 +142,19 @@
     opacity: 0.15; 
   }
 
+  .three-D-hover-car-carousel-logo {
+  width: 100%;
+  opacity: 0;
+  transition: all 0.5s;
+  filter: drop-shadow(2px 2px 2px #000);
+  position: absolute;
+  z-index: -1;
+}
+.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
+  opacity: 1;
+  transform: translate3d(5%, -20%, 670px);
+}
+
 
   /* --- ELEGANT LUXURY TYPOGRAPHY (Matched to PXL Heading) --- */
 
