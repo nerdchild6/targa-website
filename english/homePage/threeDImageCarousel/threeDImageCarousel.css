@@ -142,82 +142,41 @@
     opacity: 0.15; 
   }
 
-  .three-D-hover-car-carousel-logo {
-  width: 100%;
-  opacity: 0;
-  transition: all 0.5s;
-  filter: drop-shadow(2px 2px 2px #000);
-  position: absolute;
-  z-index: -1;
-}
 
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-  opacity: 1;
-  transform: translate3d(5%, -20%, 670px);
-}
+  /* --- ELEGANT LUXURY TYPOGRAPHY (Matched to PXL Heading) --- */
 
-  /* --- HIGH-FIDELITY DYNAMIC TYPOGRAPHY --- */
-
-  /* Car Name: Heavy Orange Text, Solid Black Outer Border */
   .three-D-hover-car-carousel-character-text {
     width: 100%;
     position: absolute;
     bottom: 85px; 
     text-align: center;
-    font-size: 26px;
-    font-weight: 900;
-    /* "Cooper Black" perfectly matches the bubbly/heavy serif from your screenshot */
-    font-family: "Cooper Black", "Arial Black", "Rockwell", serif; 
-    color: #ff8c00; /* Vivid Orange matching the original asset */
-    
-    /* 8-Axis Shadow Matrix: Creates a perfect exterior stroke without thinning the text */
-    text-shadow: 
-      -2px -2px 0 #000, 
-       0   -2px 0 #000, 
-       2px -2px 0 #000, 
-       2px  0   0 #000, 
-       2px  2px 0 #000, 
-       0    2px 0 #000, 
-      -2px  2px 0 #000, 
-      -2px  0   0 #000,
-       0    6px 10px rgba(0,0,0,0.4); /* Floating 3D drop shadow */
-
+    font-size: 32px;
+    font-weight: 500;
+    /* Luxury serif stack matching your theme */
+    font-family: "Playfair Display", "Didot", "Georgia", serif; 
+    color: #e67e22; /* Clean theme orange */
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
-    z-index: 20; /* Layer 2 */
+    z-index: 20; 
     margin: 0;
+    /* Removed heavy shadows/borders */
   }
 
-  /* Car Brand: Solid Black Text, Solid White Outer Border */
   .three-D-hover-car-carousel-logo-text {
     width: 100%;
     position: absolute;
     bottom: 50px;
     text-align: center;
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-family: "Playfair Display", "Didot", "Georgia", serif;
     color: #111; 
-    
-    /* 8-Axis Shadow Matrix for the White Border */
-    text-shadow: 
-      -1.5px -1.5px 0 #fff, 
-       0     -1.5px 0 #fff, 
-       1.5px -1.5px 0 #fff, 
-       1.5px  0     0 #fff, 
-       1.5px  1.5px 0 #fff, 
-       0      1.5px 0 #fff, 
-      -1.5px  1.5px 0 #fff, 
-      -1.5px  0     0 #fff,
-       0      4px   6px rgba(0,0,0,0.3); /* Ensures white border is visible against cream background */
-    
-    /* FIX: Always permanently visible */
-    opacity: 1; 
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
-    z-index: 40; /* Layer 3 */
+    z-index: 40; 
     margin: 0;
+    /* Removed heavy shadows/borders */
   }
 
   /* 3D Hover Projections for Text */
@@ -305,13 +264,13 @@
       padding: 0 20px;
       padding-top: 40px;
     }
-    /* Dynamic Typography Scale for Mobile */
+    
     .three-D-hover-car-carousel-character-text {
-      font-size: 30px;
+      font-size: 26px;
       bottom: 75px;
     }
     .three-D-hover-car-carousel-logo-text {
-      font-size: 20px;
+      font-size: 18px;
       bottom: 45px;
     }
     .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo-text {
