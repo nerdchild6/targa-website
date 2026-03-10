@@ -1,4 +1,7 @@
 <style>
+  /* Import Luxury Serif Font securely */
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
   /* --- Core Container Styles --- */
   .three-D-carousel-container {
     width: 100%;
@@ -142,57 +145,63 @@
     opacity: 0.15; 
   }
 
+  /* --- RESTORED POPUP CAR (Logo) --- */
   .three-D-hover-car-carousel-logo {
-  width: 100%;
-  opacity: 0;
-  transition: all 0.5s;
-  filter: drop-shadow(2px 2px 2px #000);
-  position: absolute;
-  z-index: -1;
-}
-.three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
-  opacity: 1;
-  transform: translate3d(5%, -20%, 670px);
-}
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));
+    position: absolute;
+    z-index: 40; /* Makes sure the popup car sits above the background and texts */
+    pointer-events: none;
+  }
+
+  .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo {
+    opacity: 1;
+    transform: translate3d(5%, -20%, 670px);
+  }
 
 
-  /* --- ELEGANT LUXURY TYPOGRAPHY (Matched to PXL Heading) --- */
+  /* --- ELEGANT LUXURY TYPOGRAPHY --- */
 
   .three-D-hover-car-carousel-character-text {
     width: 100%;
     position: absolute;
     bottom: 85px; 
     text-align: center;
-    font-size: 32px;
-    font-weight: 500;
-    /* Luxury serif stack matching your theme */
-    font-family: "Playfair Display", "Didot", "Georgia", serif; 
+    font-size: 28px;
+    font-weight: 600;
+    /* Beautiful luxury serif font */
+    font-family: "Playfair Display", "Times New Roman", serif; 
     color: #e67e22; /* Clean theme orange */
+    letter-spacing: 0.5px;
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
     z-index: 20; 
     margin: 0;
-    /* Removed heavy shadows/borders */
+    text-shadow: none; /* No ugly borders or shadows */
+    -webkit-text-stroke: 0; 
   }
 
   .three-D-hover-car-carousel-logo-text {
     width: 100%;
     position: absolute;
-    bottom: 50px;
+    bottom: 55px;
     text-align: center;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
-    letter-spacing: 1px;
-    font-family: "Playfair Display", "Didot", "Georgia", serif;
+    letter-spacing: 2px;
+    font-family: "Playfair Display", "Times New Roman", serif;
     color: #111; 
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
-    z-index: 40; 
+    z-index: 30; 
     margin: 0;
-    /* Removed heavy shadows/borders */
+    text-shadow: none; /* No ugly borders or shadows */
+    -webkit-text-stroke: 0; 
   }
 
-  /* 3D Hover Projections for Text */
+  /* Subtle 3D Hover Projections for Text */
   .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-character-text {
     transform: translate3d(0%, -50px, 100px);
   }
@@ -279,12 +288,12 @@
     }
     
     .three-D-hover-car-carousel-character-text {
-      font-size: 26px;
+      font-size: 24px;
       bottom: 75px;
     }
     .three-D-hover-car-carousel-logo-text {
-      font-size: 18px;
-      bottom: 45px;
+      font-size: 16px;
+      bottom: 50px;
     }
     .three-D-hover-car-carousel-card:hover .three-D-hover-car-carousel-logo-text {
       transform: translate3d(0%, -15px, 80px);
