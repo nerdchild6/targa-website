@@ -85,7 +85,7 @@
     height: 100%;
     top: 0;
     z-index: -1; 
-    background: #fff4e4; 
+    background: #F4F2F1; 
     border-radius: 30px;
     overflow: hidden; 
     box-shadow:
@@ -172,7 +172,7 @@
     font-size: 28px;
     font-weight: 600;
     /* Beautiful luxury serif font */
-    font-family: "Playfair Display", "Times New Roman", serif; 
+    font-family: "Times New Roman", serif; 
     color: #e67e22; /* Clean theme orange */
     letter-spacing: 0.5px;
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
