@@ -54,9 +54,8 @@
   /* --- 2. SWIPER SPECIFIC CSS --- */
   .targa-testimonial-slider {
     width: 100%;
-    padding-bottom: 40px; /* Space for pagination dots */
+    padding-bottom: 40px;
   }
-  /* Customizing the Swiper Navigation colors to match your brand */
   .swiper-button-next::after,
   .swiper-button-prev::after {
     color: #3c81e3;
@@ -65,53 +64,21 @@
   .swiper-pagination-bullet-active {
     background-color: #3c81e3 !important;
   }
-
-  /* Core Swiper Structural Fallbacks */
   .swiper {
     overflow: hidden;
   }
-
   .swiper-wrapper {
-    display: flex; /* Forces the child slides into a horizontal row */
+    display: flex;
     flex-direction: row;
   }
-
   .swiper-slide {
-    flex-shrink: 0; /* Prevents the flex container from squishing the slides together */
-    width: 100%; /* Ensures each slide takes up exactly one viewport width of the container */
+    flex-shrink: 0;
+    width: 100%;
   }
 </style>
 
 <div class="swiper targa-testimonial-slider">
-  <div class="swiper-wrapper">
-    <div class="swiper-slide">
-      <div class="rental-testimonial-bubble">
-        <img
-          src="https://targacar.com/wp-content/uploads/commentCard1.png"
-          class="bubble-bg-layer"
-        />
-        <div class="bubble-node node-customer-name">John Doe</div>
-        <div class="bubble-node node-review-text">
-          "The Porsche 911 was in pristine condition. Highly recommend!"
-        </div>
-        <div class="bubble-node node-car-name">Porsche 911 Carrera</div>
-      </div>
-    </div>
-
-    <div class="swiper-slide">
-      <div class="rental-testimonial-bubble">
-        <img
-          src="https://targacar.com/wp-content/uploads/commentCard1.png"
-          class="bubble-bg-layer"
-        />
-        <div class="bubble-node node-customer-name">Jane Smith</div>
-        <div class="bubble-node node-review-text">
-          "Seamless delivery and the Audi R8 exceeded all expectations."
-        </div>
-        <div class="bubble-node node-car-name">Audi R8 Spyder</div>
-      </div>
-    </div>
-  </div>
+  <div class="swiper-wrapper" id="testimonial-container"></div>
 
   <div class="swiper-pagination"></div>
   <div class="swiper-button-prev"></div>
@@ -119,34 +86,68 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // We use a polling function because Elementor injects Swiper.js asynchronously.
-    // If we fire immediately, 'Swiper' might be undefined, throwing a console error.
-    const initTargaSwiper = () => {
-      if (typeof Swiper !== "undefined") {
-        const swiper = new Swiper(".targa-testimonial-slider", {
-          loop: true,
-          slidesPerView: 1,
-          spaceBetween: 20,
-          autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-          },
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-          },
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          },
-        });
-      } else {
-        // If Swiper isn't loaded into the window object yet, wait 50ms and check again.
-        setTimeout(initTargaSwiper, 50);
-      }
-    };
+  document.addEventListener("DOMContentLoaded", async function () {
+    // 1. Define your n8n Production Webhook URL
+    // Make sure to replace this with your actual n8n URL
+    const N8N_WEBHOOK_URL =
+      "https://n8n.somsritshirt.com/webhook/1c26e311-c040-4c5b-b9df-df66a23ed03a";
 
-    initTargaSwiper();
+    // 2. Grab the current page language from Polylang (e.g., 'en', 'fr', 'th')
+    // This allows you to pass the language to n8n to fetch the correct translated reviews
+    const currentLang = document.documentElement.lang.split("-")[0] || "en";
+
+    const wrapper = document.getElementById("testimonial-container");
+
+    try {
+      // 3. Fetch the JSON data asynchronously, passing the language as a query parameter
+      const response = await fetch(`${N8N_WEBHOOK_URL}?lang=${currentLang}`);
+
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const reviewsData = await response.json();
+
+      // 4. Map the JSON payload to the DOM architecture
+      let slidesHTML = "";
+      reviewsData.forEach((review) => {
+        slidesHTML += `
+          <div class="swiper-slide">
+            <div class="rental-testimonial-bubble">
+              <img src="https://targacar.com/wp-content/uploads/commentCard1.png" class="bubble-bg-layer" />
+              <div class="bubble-node node-customer-name">${review.customerName}</div>
+              <div class="bubble-node node-review-text">"${review.reviewText}"</div>
+              <div class="bubble-node node-car-name">${review.carName}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 5. Inject the raw HTML string into the DOM
+      wrapper.innerHTML = slidesHTML;
+
+      // 6. Initialize the Swiper calculation engine
+      const initTargaSwiper = () => {
+        if (typeof Swiper !== "undefined") {
+          new Swiper(".targa-testimonial-slider", {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            pagination: { el: ".swiper-pagination", clickable: true },
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        } else {
+          setTimeout(initTargaSwiper, 50);
+        }
+      };
+
+      initTargaSwiper();
+    } catch (error) {
+      console.error("Failed to load testimonials from n8n:", error);
+      wrapper.innerHTML = `<p style="text-align: center; color: #a0a0a0; padding: 20px;">Unable to load reviews at this time.</p>`;
+    }
   });
 </script>
