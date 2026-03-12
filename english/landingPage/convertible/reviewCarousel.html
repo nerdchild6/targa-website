@@ -1,75 +1,131 @@
 <style>
-  /* Container establishes the localized coordinate system */
+  /* --- 1. YOUR EXISTING CUSTOM CSS --- */
   .rental-testimonial-bubble {
     position: relative;
     width: 100%;
-    max-width: 600px; /* Caps the maximum expansion on desktop */
+    max-width: 600px;
     margin: 0 auto;
     display: block;
   }
-
-  /* Image dictates the aspect ratio and height of the container */
   .bubble-bg-layer {
     width: 100%;
     height: auto;
     display: block;
-    user-select: none; /* Prevents accidental highlighting of the background */
+    user-select: none;
     pointer-events: none;
   }
-
-  /* Base class for data nodes */
   .bubble-node {
     position: absolute;
     z-index: 10;
     font-family: inherit;
     line-height: 1.4;
   }
-
-  /* Top-Left: Customer Name */
   .node-customer-name {
-    top: 24%; /* Shifted down to clear the top edge shadow */
-    left: 20%; /* Shifted right to clear the quote's drop shadow */
+    top: 24%;
+    left: 20%;
     font-weight: 700;
     color: #1a1a1a;
     font-size: clamp(12px, 2vw, 18px);
   }
-
-  /* Center: Review Payload */
   .node-review-text {
     top: 50%;
     left: 50%;
-    transform: translate(
-      -50%,
-      -50%
-    ); /* Centers the node perfectly on its own axis */
-    width: 75%; /* Constrains text width inside the bubble */
+    transform: translate(-50%, -50%);
+    width: 75%;
     text-align: center;
     color: #4a4a4a;
     font-size: clamp(14px, 2.5vw, 20px);
   }
-
-  /* Bottom-Right: Car Entity */
   .node-car-name {
-    bottom: 28%; /* Shifted up to clear the bottom quotes */
-    right: 22%; /* Shifted left to clear the bottom quotes */
+    bottom: 28%;
+    right: 22%;
     font-weight: 600;
     color: #3c81e3;
     font-size: clamp(11px, 1.8vw, 15px);
     text-align: right;
   }
+
+  /* --- 2. SWIPER SPECIFIC CSS --- */
+  .targa-testimonial-slider {
+    width: 100%;
+    padding-bottom: 40px; /* Space for pagination dots */
+  }
+  /* Customizing the Swiper Navigation colors to match your brand */
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    color: #3c81e3;
+    font-size: 24px !important;
+  }
+  .swiper-pagination-bullet-active {
+    background-color: #3c81e3 !important;
+  }
 </style>
 
-<div class="rental-testimonial-bubble">
-  <img
-    src="https://targacar.com/wp-content/uploads/commentCard1.png"
-    class="bubble-bg-layer"
-  />
+<div class="swiper targa-testimonial-slider">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <div class="rental-testimonial-bubble">
+        <img
+          src="https://targacar.com/wp-content/uploads/commentCard1.png"
+          class="bubble-bg-layer"
+        />
+        <div class="bubble-node node-customer-name">John Doe</div>
+        <div class="bubble-node node-review-text">
+          "The Porsche 911 was in pristine condition. Highly recommend!"
+        </div>
+        <div class="bubble-node node-car-name">Porsche 911 Carrera</div>
+      </div>
+    </div>
 
-  <div class="bubble-node node-customer-name">John Doe</div>
-
-  <div class="bubble-node node-review-text">
-    "The Porsche 911 was in pristine condition. Highly recommend!"
+    <div class="swiper-slide">
+      <div class="rental-testimonial-bubble">
+        <img
+          src="https://targacar.com/wp-content/uploads/commentCard1.png"
+          class="bubble-bg-layer"
+        />
+        <div class="bubble-node node-customer-name">Jane Smith</div>
+        <div class="bubble-node node-review-text">
+          "Seamless delivery and the Audi R8 exceeded all expectations."
+        </div>
+        <div class="bubble-node node-car-name">Audi R8 Spyder</div>
+      </div>
+    </div>
   </div>
 
-  <div class="bubble-node node-car-name">Porsche 911 Carrera</div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // We use a polling function because Elementor injects Swiper.js asynchronously.
+    // If we fire immediately, 'Swiper' might be undefined, throwing a console error.
+    const initTargaSwiper = () => {
+      if (typeof Swiper !== "undefined") {
+        const swiper = new Swiper(".targa-testimonial-slider", {
+          loop: true,
+          slidesPerView: 1,
+          spaceBetween: 20,
+          autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      } else {
+        // If Swiper isn't loaded into the window object yet, wait 50ms and check again.
+        setTimeout(initTargaSwiper, 50);
+      }
+    };
+
+    initTargaSwiper();
+  });
+</script>
