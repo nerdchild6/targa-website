@@ -1,3 +1,9 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <style>
   /* --- 1. YOUR EXISTING CUSTOM CSS --- */
   .rental-testimonial-bubble {
@@ -58,6 +64,21 @@
   }
   .swiper-pagination-bullet-active {
     background-color: #3c81e3 !important;
+  }
+
+  /* Core Swiper Structural Fallbacks */
+  .swiper {
+    overflow: hidden;
+  }
+
+  .swiper-wrapper {
+    display: flex; /* Forces the child slides into a horizontal row */
+    flex-direction: row;
+  }
+
+  .swiper-slide {
+    flex-shrink: 0; /* Prevents the flex container from squishing the slides together */
+    width: 100%; /* Ensures each slide takes up exactly one viewport width of the container */
   }
 </style>
 
