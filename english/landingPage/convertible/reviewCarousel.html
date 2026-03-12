@@ -116,7 +116,7 @@
               <img src="https://targacar.com/wp-content/uploads/commentCard1.png" class="bubble-bg-layer" />
               <div class="bubble-node node-customer-name">${review.customerName}</div>
               <div class="bubble-node node-review-text">"${review.reviewText}"</div>
-              <div class="bubble-node node-car-name">${review.carName}</div>
+              <div class="bubble-node node-car-name">${review.carName ?? ""}</div>
             </div>
           </div>
         `;
