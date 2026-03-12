@@ -1,17 +1,24 @@
 <div class="targa-primary-cta-container">
-  <a href="https://line.me/R/ti/p/%40targacar" class="targa-btn-primary"
+  <a
+    href="https://line.me/R/ti/p/%40targacar"
+    class="targa-btn-primary"
+    target="_blank"
+    rel="noopener noreferrer"
     >Click to reserve</a
   >
 </div>
 
 <style>
+  /* -----------------------------------------
+     BASE / DESKTOP CSSOM CONFIGURATION
+     ----------------------------------------- */
   .targa-primary-cta-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 144px !important; /* Adjust spatial relationship to elements above */
-    margin-bottom: 144px; /* Adjust spatial relationship to elements above */
+    margin-top: 144px !important;
+    margin-bottom: 144px;
   }
 
   .targa-btn-primary {
@@ -19,26 +26,64 @@
     justify-content: center;
     align-items: center;
     padding: 2rem 5.2rem !important;
-    background-color: #e88331; /* Derived UI color */
+    background-color: #e88331;
     color: #ffffff;
     font-family: inherit;
     font-size: 2rem !important;
     font-weight: 500;
     text-decoration: none;
-    border-radius: 50px; /* Pill geometry */
+    border-radius: 50px;
+
+    /* CRITICAL TYPOGRAPHY & BOX MODEL FIXES */
+    box-sizing: border-box !important; /* Prevents padding from blowing out the width */
+    white-space: nowrap !important; /* Forces text to stay on a single line */
+    line-height: 1.5 !important; /* Overrides theme-level typography collapse */
+
     transition:
       background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
       transform 0.2s ease;
-    box-shadow: 0 4px 14px rgba(232, 131, 49, 0.3); /* Soft contextual shadow */
+    box-shadow: 0 4px 14px rgba(232, 131, 49, 0.3);
+    text-align: center;
   }
 
   .targa-btn-primary:hover {
     background-color: #cc7228;
-    transform: translateY(-2px); /* Hardware-accelerated lift */
+    transform: translateY(-2px);
     color: #ffffff;
   }
 
   .targa-btn-primary:active {
-    transform: translateY(0); /* Tactile feedback */
+    transform: translateY(0);
+  }
+
+  /* -----------------------------------------
+     TABLET BREAKPOINT (Elementor Default: 1024px)
+     ----------------------------------------- */
+  @media (max-width: 1024px) {
+    .targa-primary-cta-container {
+      margin-top: 96px !important;
+      margin-bottom: 96px;
+    }
+    .targa-btn-primary {
+      padding: 1.5rem 4rem !important;
+      font-size: 1.5rem !important;
+    }
+  }
+
+  /* -----------------------------------------
+     MOBILE BREAKPOINT (Elementor Default: 767px)
+     ----------------------------------------- */
+  @media (max-width: 767px) {
+    .targa-primary-cta-container {
+      margin-top: 64px !important;
+      margin-bottom: 64px;
+    }
+    .targa-btn-primary {
+      /* Reduced horizontal padding because width dictates the size now */
+      padding: 1.2rem 1rem !important;
+      font-size: 1.25rem !important;
+      width: 90%;
+      max-width: 350px;
+    }
   }
 </style>
