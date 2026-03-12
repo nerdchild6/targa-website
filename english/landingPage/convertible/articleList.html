@@ -108,28 +108,29 @@
 
   /* MOBILE LAYOUT OVERRIDES */
   @media (max-width: 767px) {
-    .pxl-rental-row {
+    /* THE FIX: Added high-specificity selectors to successfully override desktop rules */
+    .pxl-rental-row,
+    .pxl-rental-row.image-left,
+    .pxl-rental-row.content-left {
       flex-direction: column !important;
       gap: 25px !important;
     }
 
     .media-column {
-      /* Overrides the desktop 50% grid constraint */
       flex: 1 1 100% !important;
       width: 100% !important;
       max-width: 100% !important;
 
-      /* THE FIX: Visually forces the media to the top of the stack */
+      /* Visually forces the media to the top of the stack */
       order: -1 !important;
     }
 
     .content-column {
-      /* Overrides the desktop 50% grid constraint */
       flex: 1 1 100% !important;
       width: 100% !important;
       max-width: 100% !important;
 
-      /* THE FIX: Visually forces the content below the media */
+      /* Visually forces the content below the media */
       order: 1 !important;
     }
 
