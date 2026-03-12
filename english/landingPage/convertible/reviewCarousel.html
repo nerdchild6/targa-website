@@ -1,0 +1,75 @@
+<style>
+  /* Container establishes the localized coordinate system */
+  .rental-testimonial-bubble {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Caps the maximum expansion on desktop */
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* Image dictates the aspect ratio and height of the container */
+  .bubble-bg-layer {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none; /* Prevents accidental highlighting of the background */
+    pointer-events: none;
+  }
+
+  /* Base class for data nodes */
+  .bubble-node {
+    position: absolute;
+    z-index: 10;
+    font-family: inherit;
+    line-height: 1.4;
+  }
+
+  /* Top-Left: Customer Name */
+  .node-customer-name {
+    top: 24%; /* Shifted down to clear the top edge shadow */
+    left: 20%; /* Shifted right to clear the quote's drop shadow */
+    font-weight: 700;
+    color: #1a1a1a;
+    font-size: clamp(12px, 2vw, 18px);
+  }
+
+  /* Center: Review Payload */
+  .node-review-text {
+    top: 50%;
+    left: 50%;
+    transform: translate(
+      -50%,
+      -50%
+    ); /* Centers the node perfectly on its own axis */
+    width: 75%; /* Constrains text width inside the bubble */
+    text-align: center;
+    color: #4a4a4a;
+    font-size: clamp(14px, 2.5vw, 20px);
+  }
+
+  /* Bottom-Right: Car Entity */
+  .node-car-name {
+    bottom: 28%; /* Shifted up to clear the bottom quotes */
+    right: 22%; /* Shifted left to clear the bottom quotes */
+    font-weight: 600;
+    color: #3c81e3;
+    font-size: clamp(11px, 1.8vw, 15px);
+    text-align: right;
+  }
+</style>
+
+<div class="rental-testimonial-bubble">
+  <img
+    src="https://targacar.com/wp-content/uploads/commentCard1.png"
+    class="bubble-bg-layer"
+  />
+
+  <div class="bubble-node node-customer-name">John Doe</div>
+
+  <div class="bubble-node node-review-text">
+    "The Porsche 911 was in pristine condition. Highly recommend!"
+  </div>
+
+  <div class="bubble-node node-car-name">Porsche 911 Carrera</div>
+</div>
