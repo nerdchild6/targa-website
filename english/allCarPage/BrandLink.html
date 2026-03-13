@@ -50,20 +50,25 @@
             for (const checkbox of checkboxes) {
               const label = checkbox.closest("label");
 
-              // Match exact text to prevent partial string matches
-              if (label && label.textContent.trim() === filter.value) {
-                // Prevent redundant toggling and execute vanilla click
-                if (!label.classList.contains("active")) {
-                  label.click();
-                }
+              // IMPROVEMENT: Case-insensitive matching for better URL reliability
+              if (label) {
+                const labelText = label.textContent.trim().toLowerCase();
+                const paramValue = filter.value.trim().toLowerCase();
 
-                // Capture the viewport alignment target
-                if (!scrollTarget) {
-                  scrollTarget = label.closest(
-                    "div.pxl-car-listing-wg, ul.list-item",
-                  );
+                if (labelText === paramValue) {
+                  // Prevent redundant toggling and execute vanilla click
+                  if (!label.classList.contains("active")) {
+                    label.click();
+                  }
+
+                  // Capture the viewport alignment target
+                  if (!scrollTarget) {
+                    scrollTarget = label.closest(
+                      "div.pxl-car-listing-wg, ul.list-item",
+                    );
+                  }
+                  break;
                 }
-                break;
               }
             }
           });
