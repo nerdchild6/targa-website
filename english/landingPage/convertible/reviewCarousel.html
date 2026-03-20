@@ -87,30 +87,66 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", async function () {
-    // 1. Define your n8n Production Webhook URL
-    // Make sure to replace this with your actual n8n URL
-    const N8N_WEBHOOK_URL =
-      "https://n8n.somsritshirt.com/webhook/1c26e311-c040-4c5b-b9df-df66a23ed03a";
-
     // 2. Grab the current page language from Polylang (e.g., 'en', 'fr', 'th')
     // This allows you to pass the language to n8n to fetch the correct translated reviews
     const currentLang = document.documentElement.lang.split("-")[0] || "en";
 
     const wrapper = document.getElementById("testimonial-container");
 
-    try {
-      // 3. Fetch the JSON data asynchronously, passing the language as a query parameter
-      const response = await fetch(`${N8N_WEBHOOK_URL}?lang=${currentLang}`);
+    const reviewsData = [
+      {
+        customerName: "คุณ ภัสร์ณลินทร์",
+        reviewText:
+          "คุณแม่ชมนั่งสบายค่ะ คงได้ใช้บริการบ่อย เจอแต่ร้านที่มีสีขาวหาร้านสีดำยากมาก",
+        carName: "Toyota Alphard",
+      },
+      {
+        customerName: "คุณ ต้น ครับ",
+        reviewText: "ที่นี่บริการดี ใช้บริการแล้วประทับใจครับ",
+      },
+      {
+        customerName: "คุณ Kai Jeaw",
+        reviewText:
+          "เช่ามารอบที่สองแล้ว ดูแลดีมากๆ ประทับใจทุกขั้นตอน มีปัญหาอะไรโทรหรือปรึกษาแอดมินได้ตลอดเวลา ดีมากๆแนะนำเลยค่ะ",
+        carName: "Porsch 718 Boxster",
+      },
+      {
+        customerName: "คุณ Thant Sin",
+        reviewText: "Should Tryyy ,Really Recommend !!",
+      },
+      {
+        customerName: "คุณ Songjin Arkit",
+        reviewText: "รถดีเยี่ยมมากครับพนักงานบริการดีและเป็นกันเองตอนส่งมอบรถ",
+        carName: "Mercedes-Benz C300 Convertible",
+      },
+      {
+        customerName: "คุณ Ffn LS",
+        reviewText:
+          "ตั้งแต่ใช้บริการมาบริการดีมากครับไม่ว่าจะเป็นตอนส่งรถหรือรับรถทุกอย่างดูเหมือนมืออาชีพและบริการเป็นอย่างดีแถมผมเป็นลูกค้าที่ชอบการบริการแบบนี้มากรู็สึกปลื้มใจมากครับที่ได้ใช้บริการที่นี้ คุ้มค่าและจัดส่งทางไกลได้ตลอด",
+        carName: "BMW 320D LCI",
+      },
+      {
+        customerName: "คุณ Miw Wongsiyakul",
+        reviewText:
+          "พนักงานทุกท่านให้บริการดีมากค่ะ รถสวยและใหม่มาก กลับมาใช้บริการอีกแน่นอนค่ะ",
+        carName: "Mercedes-Benz C300 Convertible",
+      },
+      {
+        customerName: "คุณ Ome Let",
+        reviewText:
+          "แอดมินดูแลดีมาก ทางร้านติดขัดปัญหาตรงไหนแก้ไขกันได้ดีสุดๆ รถขับดีมาก",
+      },
+      {
+        customerName: "คุณ Oat Boonlai",
+        reviewText: "ขับดีมากๆครับผม รถคุณภาพ",
+        carName: "Toyota alphard",
+      },
+    ];
 
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
-
-      const reviewsData = await response.json();
-
-      // 4. Map the JSON payload to the DOM architecture
-      let slidesHTML = "";
-      reviewsData.forEach((review) => {
-        slidesHTML += `
+    // 4. Map the JSON payload to the DOM architecture
+    let slidesHTML = "";
+    reviewsData.forEach((review) => {
+      slidesHTML += `
           <div class="swiper-slide">
             <div class="rental-testimonial-bubble">
               <img src="https://targacar.com/wp-content/uploads/commentCard4.png" class="bubble-bg-layer" />
@@ -120,34 +156,30 @@
             </div>
           </div>
         `;
-      });
+    });
 
-      // 5. Inject the raw HTML string into the DOM
-      wrapper.innerHTML = slidesHTML;
+    // 5. Inject the raw HTML string into the DOM
+    wrapper.innerHTML = slidesHTML;
 
-      // 6. Initialize the Swiper calculation engine
-      const initTargaSwiper = () => {
-        if (typeof Swiper !== "undefined") {
-          new Swiper(".targa-testimonial-slider", {
-            loop: true,
-            slidesPerView: 1,
-            spaceBetween: 20,
-            autoplay: { delay: 5000, disableOnInteraction: false },
-            pagination: { el: ".swiper-pagination", clickable: true },
-            navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            },
-          });
-        } else {
-          setTimeout(initTargaSwiper, 50);
-        }
-      };
+    // 6. Initialize the Swiper calculation engine
+    const initTargaSwiper = () => {
+      if (typeof Swiper !== "undefined") {
+        new Swiper(".targa-testimonial-slider", {
+          loop: true,
+          slidesPerView: 1,
+          spaceBetween: 20,
+          autoplay: { delay: 5000, disableOnInteraction: false },
+          pagination: { el: ".swiper-pagination", clickable: true },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      } else {
+        setTimeout(initTargaSwiper, 50);
+      }
+    };
 
-      initTargaSwiper();
-    } catch (error) {
-      console.error("Failed to load testimonials from n8n:", error);
-      wrapper.innerHTML = `<p style="text-align: center; color: #a0a0a0; padding: 20px;">Unable to load reviews at this time.</p>`;
-    }
+    initTargaSwiper();
   });
 </script>
