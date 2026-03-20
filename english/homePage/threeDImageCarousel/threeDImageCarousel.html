@@ -1,41 +1,258 @@
 <!-- MAIN HTML CONTAINER -->
-<div id="pxl-3d-car-carousel" class="three-D-carousel-container loading">
+<div id="pxl-3d-car-carousel" class="three-D-carousel-container">
   Synchronizing Inventory...
 </div>
 
 <script>
   (function () {
     const carouselContainer = document.getElementById("pxl-3d-car-carousel");
-    const N8N_ENDPOINT_URL =
-      "https://n8n.somsritshirt.com/webhook/2427e01b-6aed-436d-95b6-5cf141b7fe42";
 
-    const timestamp = new Date().getTime();
-
-    fetch(`${N8N_ENDPOINT_URL}?t=${timestamp}`)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`HTTP Matrix Error: ${response.status}`);
-        return response.json();
-      })
-      .then((rawData) => {
-        let normalizedData = Array.isArray(rawData) ? rawData : [rawData];
-        if (normalizedData.length > 0 && normalizedData[0].json) {
-          normalizedData = normalizedData.map((item) => item.json);
-        }
-
-        render3DCarousel(normalizedData);
-        requestAnimationFrame(() =>
-          setTimeout(initializeReverseSynchronization, 100),
-        );
-      })
-      .catch((error) => {
-        console.error("n8n Sync Failure:", error);
-        if (carouselContainer) {
-          carouselContainer.innerHTML =
-            "Backend sync interrupted. Check n8n webhook routing.";
-          carouselContainer.classList.remove("loading");
-        }
-      });
+    const data = [
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview.png",
+        carName: "A5 40 TSFI Coupe", // Replaces characterImage
+        carBrand: "Audi", // Replaces logoImage
+        currency: "฿",
+        amount: "3,500",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-1.png",
+        carName: "3 Series 320d", // Replaces characterImage
+        carBrand: "BMW", // Replaces logoImage
+        currency: "฿",
+        amount: "3,500",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-1-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-2.png",
+        carName: "320d M Sport LCI", // Replaces characterImage
+        carBrand: "BMW", // Replaces logoImage
+        currency: "฿",
+        amount: "4,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-2-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-3.png",
+        carName: "Z4 sDrive 30i M Sport", // Replaces characterImage
+        carBrand: "BMW", // Replaces logoImage
+        currency: "฿",
+        amount: "5,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-1.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-4.png",
+        carName: "Z4 M40i", // Replaces characterImage
+        carBrand: "BMW", // Replaces logoImage
+        currency: "฿",
+        amount: "6,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-2.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-5.png",
+        carName: "430i Convertible LCI", // Replaces characterImage
+        carBrand: "BMW", // Replaces logoImage
+        currency: "฿",
+        amount: "9,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/DSC06236-1-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/DSC06289-removebg-preview.png",
+        carName: "C300 CABRIOLET", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "4,500",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-3-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-6.png",
+        carName: "CLS53 AMG", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "7,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-3.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-7.png",
+        carName: "CLE300 4MATIC", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "8,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-4-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-8.png",
+        carName: "Vito", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "6,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-4-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-9.png",
+        carName: "ALPHARD30", // Replaces characterImage
+        carBrand: "Toyota", // Replaces logoImage
+        currency: "฿",
+        amount: "3,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-5-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-10.png",
+        carName: "LM300h 7seats", // Replaces characterImage
+        carBrand: "Lexus", // Replaces logoImage
+        currency: "฿",
+        amount: "8,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-5-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-11.png",
+        carName: "981 BOXSTER", // Replaces characterImage
+        carBrand: "Porsche", // Replaces logoImage
+        currency: "฿",
+        amount: "10,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-6-scaled.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-12.png",
+        carName: "718 BOXSTER", // Replaces characterImage
+        carBrand: "Porsche", // Replaces logoImage
+        currency: "฿",
+        amount: "10,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-6-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-13.png",
+        carName: "cayenne e-hybrid", // Replaces characterImage
+        carBrand: "Porsche", // Replaces logoImage
+        currency: "฿",
+        amount: "13,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-7.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-14.png",
+        carName: "911 (991.2 Carrera S)", // Replaces characterImage
+        carBrand: "Porsche", // Replaces logoImage
+        currency: "฿",
+        amount: "19,900",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/cover-7.jpg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-15.png",
+        carName: "G63 AMG", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "40,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-8-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-16.png",
+        carName: "maybach S-Class", // Replaces characterImage
+        carBrand: "Mercedes-Benz", // Replaces logoImage
+        currency: "฿",
+        amount: "55,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-9-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-17.png",
+        carName: "Continental GT", // Replaces characterImage
+        carBrand: "Bentley", // Replaces logoImage
+        currency: "฿",
+        amount: "85,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage: "https://targacar.com/wp-content/uploads/card-scaled.jpeg",
+        logoImage: "https://targacar.com/wp-content/uploads/popup-1.png",
+        carName: "488", // Replaces characterImage
+        carBrand: "Ferrari", // Replaces logoImage
+        currency: "฿",
+        amount: "65,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-10-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-18.png",
+        carName: "GT", // Replaces characterImage
+        carBrand: "McLaren", // Replaces logoImage
+        currency: "฿",
+        amount: "65,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/DSC03244-1-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/logo-removebg-preview-19.png",
+        carName: "Huracan", // Replaces characterImage
+        carBrand: "Lamborghini", // Replaces logoImage
+        currency: "฿",
+        amount: "65,000",
+        perDay: "/ day",
+      },
+      {
+        coverImage:
+          "https://targacar.com/wp-content/uploads/cover-13-scaled.jpeg",
+        logoImage:
+          "https://targacar.com/wp-content/uploads/DSC03315-removebg-preview.png",
+        carName: "Huracan Evo Sypder", // Replaces characterImage
+        carBrand: "Lamborghini", // Replaces logoImage
+        currency: "฿",
+        amount: "80,000",
+        perDay: "/ day",
+      },
+    ];
 
     function render3DCarousel(carData) {
       carouselContainer.innerHTML = "";
@@ -130,5 +347,10 @@
       track.addEventListener("touchstart", stopAutoScroll, { passive: true });
       track.addEventListener("touchend", startAutoScroll, { passive: true });
     }
+
+    render3DCarousel(data);
+    requestAnimationFrame(() =>
+      setTimeout(initializeReverseSynchronization, 100),
+    );
   })();
 </script>
