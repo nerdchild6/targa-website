@@ -184,11 +184,6 @@
 <!-- --- JavaScript Logic (With n8n Webhook Integration) --- -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // --- CONFIGURATION ---
-    // Ensure your n8n webhook returns a JSON Array with vertical video URLs
-    const N8N_WEBHOOK_URL =
-      "https://n8n.somsritshirt.com/webhook/bd8f782b-5194-4354-8d90-af66c86ef1c4";
-
     const scene = document.getElementById("rcmsScene");
     const prevBtn = document.getElementById("rcmsPrev");
     const nextBtn = document.getElementById("rcmsNext");
@@ -196,14 +191,13 @@
     let activeIndex = 0;
     let cards = [];
 
-    // Fallback Mock Data for testing if n8n webhook isn't configured yet
-    const mockData = [
+    const fleetData = [
       {
         id: "LUX",
         title: "Luxury Fleet",
         handle: "@targa_luxury",
         videoUrl:
-          "https://cdn.pixabay.com/video/2021/08/23/85973-592182283_tiny.mp4",
+          "https://targacar.com/wp-content/uploads/Video-981x718-home.mov",
         comments: 12,
         shares: 4,
         likes: 89,
@@ -213,7 +207,7 @@
         title: "Supercar Series",
         handle: "@targa_super",
         videoUrl:
-          "https://cdn.pixabay.com/video/2021/04/13/70922-536495394_tiny.mp4",
+          "https://targacar.com/wp-content/uploads/Video-all-car-home.mov",
         comments: 45,
         shares: 12,
         likes: 210,
@@ -223,34 +217,41 @@
         title: "Exotic Rentals",
         handle: "@targa_exotic",
         videoUrl:
-          "https://cdn.pixabay.com/video/2020/05/24/40061-424687556_tiny.mp4",
+          "https://targacar.com/wp-content/uploads/Video-all-supercar-home.mov",
+        comments: 128,
+        shares: 56,
+        likes: 1200,
+      },
+      {
+        id: "LUX",
+        title: "Luxury Fleet",
+        handle: "@targa_luxury",
+        videoUrl:
+          "https://targacar.com/wp-content/uploads/Video-maserati-home.mov",
+        comments: 12,
+        shares: 4,
+        likes: 89,
+      },
+      {
+        id: "SPR",
+        title: "Supercar Series",
+        handle: "@targa_super",
+        videoUrl:
+          "https://targacar.com/wp-content/uploads/Video-supercar-parking-home.mov",
+        comments: 45,
+        shares: 12,
+        likes: 210,
+      },
+      {
+        id: "EXO",
+        title: "Exotic Rentals",
+        handle: "@targa_exotic",
+        videoUrl: "https://targacar.com/wp-content/uploads/Video-z4-home.mov",
         comments: 128,
         shares: 56,
         likes: 1200,
       },
     ];
-
-    // 1. Asynchronous Data Fetching Engine
-    async function fetchFleetData() {
-      try {
-        let fleetData;
-
-        if (N8N_WEBHOOK_URL) {
-          const response = await fetch(N8N_WEBHOOK_URL);
-          if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
-          fleetData = await response.json();
-        } else {
-          console.log("No n8n Webhook defined. Loading Mock Data.");
-          fleetData = mockData;
-        }
-
-        renderCarouselDOM(fleetData);
-      } catch (error) {
-        console.error("Failed to fetch fleet inventory from n8n:", error);
-        scene.innerHTML = `<p style="color: #718096;">Unable to load fleet inventory.</p>`;
-      }
-    }
 
     // 2. DOM Hydration Engine
     function renderCarouselDOM(fleetData) {
@@ -355,6 +356,6 @@
     }
 
     // Execute initialization
-    fetchFleetData();
+    renderCarouselDOM(fleetData);
   });
 </script>
