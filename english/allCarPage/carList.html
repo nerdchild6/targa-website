@@ -154,27 +154,17 @@
     // 1. Polylang Integration: Detect active locale from the HTML tag
     const currentLocale = document.documentElement.lang || "en-US";
 
-    // 2. n8n Webhook Endpoint
-    // This expects a GET request, appending the locale as a query parameter
-    const n8nEndpoint = `https://n8n.somsritshirt.com/webhook/4bd0dec9-a3d9-4259-837a-f60277457267?lang=${currentLocale}`;
-
-    async function fetchInventory() {
-      try {
-        const response = await fetch(n8nEndpoint, {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        });
-
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-
-        const vehicles = await response.json();
-        renderGrid(vehicles);
-      } catch (error) {
-        console.error("Failed to hydrate inventory:", error);
-        gridContainer.innerHTML = `<p style="color:red;">Unable to load inventory. Please try again later.</p>`;
-      }
-    }
+    const vehicles = [
+      {
+        id: "101",
+        title: "Lamborghini Huracan",
+        priceFormatted: "80,000 THB",
+        imageUrl:
+          "https://targacar.com/wp-content/uploads/DSC03244-1-scaled.jpeg",
+        detailsUrl: "/cars/lamborghini-huracan/",
+        tags: ["Gasohol 95", "Lamborghini"],
+      },
+    ];
 
     function renderGrid(vehicles) {
       // Use DocumentFragment to minimize browser reflows during DOM injection
@@ -211,6 +201,6 @@
     }
 
     // Initialize
-    fetchInventory();
+    renderGrid(vehicles);
   });
 </script>
