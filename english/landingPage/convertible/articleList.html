@@ -147,44 +147,40 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Webhook Endpoint defined
-    const N8N_WEBHOOK_URL =
-      "https://n8n.somsritshirt.com/webhook/2b39d546-37fa-4bc4-8e75-da5532ba5ab0";
+    // Select the target container from the DOM
     const container = document.querySelector(
       ".pxl-auto-rental-articles-container",
     );
 
-    /**
-     * Initializes the asynchronous data fetch and rendering pipeline.
-     */
-    async function initializeDynamicRows() {
-      if (!container) return;
-
-      container.innerHTML =
-        '<p class="pxl-loading-state" style="text-align:center; padding: 40px; color: #666; font-family: sans-serif;">Synchronizing fleet data...</p>';
-
-      try {
-        const response = await fetch(N8N_WEBHOOK_URL, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
+    const rowsData = [
+      {
+        type: "image",
+        mediaUrl: "https://targacar.com/wp-content/uploads/IMG_4401-scaled.jpg",
+        title: "Begins Journey with Just 2 things",
+        details: [
+          {
+            main: "Thai ID or Passport",
+            desc: "",
           },
-        });
-
-        if (!response.ok)
-          throw new Error(`HTTP error! Status: ${response.status}`);
-
-        const rowsData = await response.json();
-        renderRows(rowsData);
-      } catch (error) {
-        console.error(
-          "PXL Automation Error: Failed to fetch n8n webhook data.",
-          error,
-        );
-        container.innerHTML =
-          '<p class="pxl-error-state" style="color:#d9534f; text-align:center; padding: 40px;">Unable to load content. Please verify webhook connectivity.</p>';
-      }
-    }
+          {
+            main: "Driver’s License",
+            desc: "Thai or international",
+          },
+        ],
+      },
+      {
+        type: "video",
+        mediaUrl:
+          "https://targacar.com/wp-content/uploads/Video-981x718-home.mov",
+        title: "Seamless Fleet Selection",
+        details: [
+          {
+            main: "Wide Vehicle Range",
+            desc: "From sedans to luxury convertibles",
+          },
+        ],
+      },
+    ];
 
     /**
      * Compiles the DOM structure using Viewport-Aware layout logic.
@@ -256,7 +252,6 @@
       container.appendChild(fragment);
     }
 
-    // Execute the pipeline
-    initializeDynamicRows();
+    renderRows(rowsData);
   });
 </script>
