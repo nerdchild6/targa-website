@@ -43,36 +43,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Custom Blockquote component */
-  .rcms-blockquote {
-    background-color: var(--rcms-primary-blue);
-    color: #ffffff;
-    padding: 2rem;
-    border-radius: var(--rcms-border-radius);
-    position: relative;
-    margin: 2rem 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    line-height: 1.5;
-  }
-
-  .rcms-blockquote::before {
-    content: "\201C"; /* Left Double Quotation Mark */
-    font-size: 4rem;
-    position: absolute;
-    top: -0.5rem;
-    left: 1rem;
-    color: rgba(255, 255, 255, 0.2);
-    font-family: serif;
-  }
-
-  .rcms-blockquote-author {
-    display: block;
-    margin-top: 1rem;
-    font-size: 0.875rem;
-    opacity: 0.8;
-  }
-
   /* Split Content Section (Text + Image) */
   .rcms-split-section {
     display: flex;
@@ -100,32 +70,6 @@
 
   .rcms-full-image {
     margin: 1.5rem 0;
-  }
-
-  /* Multi-column Feature List */
-  .rcms-feature-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem 2rem;
-    list-style-type: none;
-    padding: 0;
-    margin: 1.5rem 0;
-  }
-
-  .rcms-feature-list li {
-    position: relative;
-    padding-left: 1.5rem;
-    color: var(--rcms-text-muted);
-  }
-
-  .rcms-feature-list li::before {
-    content: "•";
-    color: var(--rcms-primary-blue);
-    position: absolute;
-    left: 0;
-    font-weight: bold;
-    font-size: 1.2rem;
-    line-height: 1;
   }
 
   /* Post Tags/Footer area */
@@ -161,40 +105,34 @@
       flex: 100%;
       width: 100%;
     }
-    .rcms-feature-list {
-      grid-template-columns: 1fr; /* Stack list to single column on mobile */
-    }
   }
 </style>
 
 <article class="rcms-article-container">
   <header>
-    <h1>Comfort vs. Performance: Choosing the Right Luxury Car</h1>
+    <h1>ความแตกต่างระหว่าง Roadster vs Cabriolet</h1>
     <div class="rcms-post-meta">
       <span>By System Admin</span> | <span>October 24, 2023</span> |
       <span>Car Rental</span>
     </div>
   </header>
 
-  <div class="rcms-blockquote">
-    A luxury car isn't just a mode of transport; it's an experience. Whether you
-    prioritize the plush comfort of a sedan or the raw thrill of a sports car,
-    your journey dictates your vehicle choice.
-    <span class="rcms-blockquote-author">- Automotive Expert</span>
-  </div>
-
   <section class="rcms-split-section">
     <div class="rcms-split-text">
-      <h2>Top Features to Look for in a Road Trip Vehicle</h2>
+      <h2>Heading2</h2>
       <p>
-        When selecting a luxury vehicle for extended travel, ergonomic design
-        and advanced suspension systems are paramount. You must balance cargo
-        capacity with driving dynamics to ensure driver fatigue is minimized
-        over long distances.
+        หลายคนมักเข้าใจว่ารถเปิดประทุนทุกคันเหมือนกันหมด แต่จริงๆ แล้วคำว่า
+        “Roadster” และ “Cabriolet” มีความหมายและคาแรกเตอร์ที่ต่างกันพอสมควร
+        โดยเฉพาะในกลุ่มรถยุโรปที่แยกประเภทชัดเจน ถ้าคุณกำลังสนใจรถเปิดประทุน
+        การเข้าใจความต่างของสองคำนี้จะช่วยให้เลือกได้ตรงกับสไตล์มากขึ้น
       </p>
       <p>
-        Modern telematics and integrated infotainment systems also play a
-        critical role in navigation and cabin entertainment.
+        เริ่มจาก Roadster ก่อน รถประเภทนี้ถูกออกแบบมาเพื่อ “ความสปอร์ตล้วนๆ”
+        โดยส่วนใหญ่จะเป็นรถ 2 ที่นั่ง ไม่มีเบาะหลัง เน้นน้ำหนักเบา ตัวรถเตี้ย
+        และการขับขี่ที่คล่องตัว จุดเด่นคือฟีลลิ่งที่กระชับและตอบสนองไว
+        เหมาะกับคนที่ชอบขับเอง ชอบความสนุก
+        และอยากได้ประสบการณ์ใกล้เคียงรถสปอร์ตแท้ๆ ตัวอย่างที่ชัดเจนคือ BMW Z4
+        ที่ให้ความรู้สึกขับสนุกและเน้นอารมณ์มากกว่าความอเนกประสงค์
       </p>
     </div>
     <div class="rcms-split-image">
@@ -206,11 +144,16 @@
   </section>
 
   <section>
-    <h2>Matching Car Type to Your Trip</h2>
+    <h2>Heading2</h2>
     <p>
-      The operational requirements of your journey should dictate your fleet
-      selection. Coastal drives benefit from convertibles, while mountainous
-      terrains necessitate all-wheel-drive SUVs with higher ground clearance.
+      ในขณะที่ Cabriolet จะมาในแนว “หรู + ใช้งานได้จริงมากกว่า”
+      ถึงแม้จะเป็นรถเปิดประทุนเหมือนกัน แต่ส่วนใหญ่จะมี 4 ที่นั่ง
+      หรืออย่างน้อยก็มีเบาะหลังให้ใช้งานได้ ตัวรถจะใหญ่กว่า นั่งสบายกว่า
+      และเน้นความนุ่มนวลในการขับขี่มากกว่า Roadster
+      เหมาะกับคนที่อยากได้รถเปิดประทุนไว้ใช้ในชีวิตประจำวัน
+      หรือใช้ในโอกาสพิเศษแบบไม่ต้องแลกกับความสบายมากเกินไป ตัวอย่างเช่น
+      Mercedes-Benz C300 Cabriolet
+      ที่ให้ทั้งความพรีเมียมและความยืดหยุ่นในการใช้งาน
     </p>
 
     <div class="rcms-full-image">
@@ -220,24 +163,21 @@
       />
     </div>
 
-    <ul class="rcms-feature-list">
-      <li>Premium Leather Upholstery</li>
-      <li>Advanced Driver Assistance Systems (ADAS)</li>
-      <li>Adaptive Cruise Control</li>
-      <li>Multi-Zone Climate Control</li>
-      <li>High-Fidelity Audio Systems</li>
-      <li>Dynamic Handling Packages</li>
-    </ul>
-
     <p>
-      Ensure your chosen vehicle aligns strictly with the payload and passenger
-      manifest of your itinerary.
+      ถ้ามองให้เข้าใจง่าย Roadster คือรถสำหรับ “ขับเอาฟีล” ส่วน Cabriolet
+      คือรถสำหรับ “ขับเอาความสบายและไลฟ์สไตล์” ดังนั้นถ้าคุณเน้นความสนุก
+      ชอบความสปอร์ต และไม่ได้ต้องใช้รถหลายคน Roadster จะตอบโจทย์มากกว่า
+      แต่ถ้าคุณอยากได้ความหรู นั่งสบาย และใช้งานได้หลากหลาย Cabriolet
+      จะเป็นตัวเลือกที่เหมาะกับชีวิตประจำวันมากกว่า
+    </p>
+    <p>
+      สุดท้ายแล้วไม่มีแบบไหนดีกว่าแบบไหน ขึ้นอยู่กับว่าคุณให้ความสำคัญกับอะไร
+      ถ้าเลือกได้ตรงกับสไตล์ของตัวเอง ไม่ว่าจะเป็น Roadster หรือ Cabriolet
+      ก็สามารถให้ประสบการณ์การขับรถเปิดประทุนที่น่าประทับใจได้เหมือนกัน
     </p>
   </section>
 
   <footer class="rcms-post-tags">
-    <a href="#" class="rcms-tag">Car Rentals</a>
-    <a href="#" class="rcms-tag">Luxury Fleet</a>
-    <a href="#" class="rcms-tag">Performance</a>
+    <a href="/convertible" class="rcms-tag">Convertible</a>
   </footer>
 </article>
