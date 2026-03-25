@@ -14,10 +14,26 @@
   /* 2. Row Layout (Flexbox) */
   .pxl-rental-row {
     display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 40px !important;
+    margin-bottom: var(--row-spacing) !important;
+    width: 100% !important;
+  }
+
+  .pxl-media-row {
+    display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: var(--column-spacing) !important;
-    margin-bottom: var(--row-spacing) !important;
+    width: 100% !important;
+  }
+
+  .pxl-content-row {
+    display: flex !important;
+    width: 100% !important;
   }
 
   /* 3. Media & Content Column Basic Styles */
@@ -36,8 +52,8 @@
   }
 
   .content-column {
-    flex: 1 1 calc(50% - (var(--column-spacing) / 2)) !important;
-    max-width: calc(50% - (var(--column-spacing) / 2)) !important;
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
     width: 100% !important;
 
     font-family: var(--main-font-family) !important;
@@ -62,7 +78,7 @@
 
   /* 5. Typography and Text Styling */
   .row-title {
-    font-size: clamp(28px, 3vw, 36px) !important;
+    font-size: clamp(28px, 1.5vw, 36px) !important;
     font-weight: var(--title-font-weight) !important;
     margin-bottom: 25px !important;
     line-height: 1.2 !important;
@@ -82,7 +98,7 @@
 
   .list-item .item-main {
     font-weight: var(--item-font-weight) !important;
-    font-size: 20px !important;
+    font-size: 16px !important;
     margin-bottom: 4px !important;
   }
 
@@ -100,8 +116,11 @@
 
   /* MOBILE LAYOUT OVERRIDES */
   @media (max-width: 767px) {
-    /* THE FIX: Added high-specificity selectors to successfully override desktop rules */
     .pxl-rental-row {
+      gap: 25px !important;
+    }
+
+    .pxl-media-row {
       flex-direction: column !important;
       gap: 25px !important;
     }
@@ -110,18 +129,12 @@
       flex: 1 1 100% !important;
       width: 100% !important;
       max-width: 100% !important;
-
-      /* Visually forces the media to the top of the stack */
-      order: -1 !important;
     }
 
     .content-column {
       flex: 1 1 100% !important;
       width: 100% !important;
       max-width: 100% !important;
-
-      /* Visually forces the content below the media */
-      order: 1 !important;
     }
 
     .pxl-media-node {
@@ -144,29 +157,43 @@
 
     const rowsData = [
       {
-        type: "image",
-        mediaUrl: "https://targacar.com/wp-content/uploads/IMG_4401-scaled.jpg",
-        title: "Begins Journey with Just 2 things",
-        details: [
+        media: [
           {
-            main: "Thai ID or Passport",
-            desc: "",
+            type: "image",
+            mediaUrl:
+              "https://targacar.com/wp-content/uploads/IMG_4401-scaled.jpg",
           },
           {
-            main: "Driver’s License",
-            desc: "Thai or international",
+            type: "video",
+            mediaUrl:
+              "https://targacar.com/wp-content/uploads/Video-981x718-home.mov",
           },
         ],
-      },
-      {
-        type: "video",
-        mediaUrl:
-          "https://targacar.com/wp-content/uploads/Video-981x718-home.mov",
-        title: "Seamless Fleet Selection",
+        title: "เปิดประสบการณ์ขับรถหรูเปิดประทุนครั้งแรก ต้องรู้อะไรบ้าง",
         details: [
           {
-            main: "Wide Vehicle Range",
-            desc: "From sedans to luxury convertibles",
+            main: `ถ้าคุณกำลังจะได้ลองขับรถหรูเปิดประทุนหลังคาผ้าใบครั้งแรก บอกเลยว่านี่ไม่ใช่แค่ “การขับรถ” ธรรมดา แต่มันคือฟีลลิ่งที่ต่างออกไปแบบชัดเจน ตั้งแต่วินาทีที่กดปุ่มเปิดหลังคา โลกทั้งใบจะเหมือนเข้ามาอยู่รอบตัวคุณทันที ทั้งลม แสง และเสียง มันให้ความรู้สึกอิสระแบบที่รถทั่วไปให้ไม่ได้เลย โดยเฉพาะรถยุโรประดับพรีเมียมอย่าง Mercedes-Benz C300 Cabriolet , BMW Z4 หรือจะเป็น Porsche 718 Boxster ที่ออกแบบมาให้ทั้งขับสนุกและยังนั่งสบาย`,
+          },
+          {
+            main: `แต่สิ่งหนึ่งที่มือใหม่มักไม่ทันคิดคือ “สภาพอากาศ” ถ้าแดดแรงตอนกลางวันในไทยอาจร้อนจนอยากปิดหลังคาทันที ถ้าฝนตกก็ไม่สามารถเปิดประทุนได้ แต่ถ้าเลือกเวลาถูก เช่นช่วงเช้าหรือเย็น บรรยากาศจะดีมาก โดยเฉพาะถ้าได้ขับเลียบทะเลหรือถนนโล่งๆ จะยิ่งรู้สึกว่ารถแบบนี้มันถูกสร้างมาเพื่อโมเมนต์แบบนี้จริงๆ`,
+          },
+          {
+            main: `ในเรื่องการใช้งาน หลังคาผ้าใบของรถยุโรปสมัยนี้ใช้งานง่ายมาก แค่กดปุ่มก็เปิด-ปิดได้ภายในไม่กี่วินาที รถทุกคันของ Targa อย่างเช่น Mercedes-Benz C300 Cabriolet , BMW Z4 หรือจะเป็น Porsche 718 Boxster ยังสามารถเปิดหลังคาได้แม้รถกำลังเคลื่อนที่ช้าๆ แต่ก็ควรรู้ไว้ว่าอย่าใช้ตอนความเร็วสูง และควรเช็กพื้นที่รอบๆ ให้เรียบร้อยก่อนใช้งาน`,
+          },
+          {
+            main: `อีกอย่างคือ “เสียงลม” ต่อให้เป็นรถหรูแค่ไหนแต่ถ้าขึ้นชื่อว่าเป็นรถเปิดประทุนแล้วเปิดหลังคาหรือปิดหลังคาก็จะไม่ได้ความเงียบแบบรถซีดานปกติ คุณจะได้ยินทั้งเสียงลมและเสียงเครื่องยนต์ ซึ่งจริงๆ แล้วมันเป็นเสน่ห์ของรถประเภทนี้มากกว่า บางรุ่นจะมีอุปกรณ์ช่วยลดแรงลม แต่ยังไงสิ่งที่ได้มาก็คือความรู้สึกสปอร์ตอย่างที่รถปกติให้ไม่ได้`,
+          },
+          {
+            main: `เรื่องพื้นที่ใช้สอยก็เป็นอีกจุดที่ต้องเข้าใจ รถเปิดประทุนหลังคาผ้าใบส่วนใหญ่จะไม่ได้เน้นความกว้างขวาง พื้นที่เก็บของจะเล็กลง และบางรุ่นเบาะหลังก็แทบใช้งานจริงไม่ได้เลย เพราะงั้นมันจะเหมาะกับการขับ 2 คน ไปเที่ยวชิลๆ หรือใช้ในโอกาสพิเศษมากกว่าการใช้งานแบบจริงจังทุกวัน`,
+          },
+          {
+            main: `หลายคนอาจกังวลเรื่องความปลอดภัย แต่จริงๆ แล้วรถยุโรประดับนี้มีระบบความปลอดภัยครบ ทั้งโครงสร้างเสริมความแข็งแรง ระบบกันรถพลิกคว่ำ และถุงลมนิรภัย ดังนั้นถึงจะเป็นรถเปิดประทุน ก็ยังมั่นใจได้ในระดับเดียวกับรถหรูทั่วไป`,
+          },
+          {
+            main: `สุดท้าย สิ่งที่สำคัญที่สุดคือ “อย่ามองมันเป็นแค่รถ” เพราะรถเปิดประทุนคือประสบการณ์มากกว่า คุณอาจไม่ได้ใช้มันทุกวัน แต่ทุกครั้งที่ได้ขับ มันจะให้ความรู้สึกพิเศษกว่าปกติ ไม่ว่าจะเป็นการออกทริปสั้นๆ การถ่ายรูป หรือแค่ขับรับลมตอนเย็น มันคือสิ่งที่ทำให้วันธรรมดาดูดีขึ้นทันที`,
+          },
+          {
+            main: `ถ้าคุณยังไม่เคยลอง การเริ่มจากการ “เช่า” สักครั้งถือเป็นทางเลือกที่ดี เพราะคุณจะได้รู้เลยว่าฟีลแบบนี้เหมาะกับคุณไหม แล้วค่อยตัดสินใจต่อว่ามันคุ้มค่ากับการมีไว้จริงหรือเปล่า`,
           },
         ],
       },
@@ -190,22 +217,26 @@
         const rowWrapper = document.createElement("div");
         rowWrapper.className = `pxl-rental-row`;
 
-        // Build Media Column
-        let mediaHtml = "";
-        if (row.type === "video") {
-          mediaHtml = `
-            <div class="media-column">
-                <video autoplay muted loop playsinline class="pxl-media-node">
-                    <source src="${row.mediaUrl}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        // Build Media Row (2 Columns)
+        const mediaRowHtml = `
+            <div class="pxl-media-row">
+                ${row.media
+                  .map((m) =>
+                    m.type === "video"
+                      ? `
+                <div class="media-column">
+                    <video autoplay muted loop playsinline class="pxl-media-node">
+                        <source src="${m.mediaUrl}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>`
+                      : `
+                <div class="media-column">
+                    <img src="${m.mediaUrl}" alt="${row.title} visual" loading="lazy" class="pxl-media-node" />
+                </div>`,
+                  )
+                  .join("")}
             </div>`;
-        } else {
-          mediaHtml = `
-            <div class="media-column">
-                <img src="${row.mediaUrl}" alt="${row.title} visual" loading="lazy" class="pxl-media-node" />
-            </div>`;
-        }
 
         // Build Details List HTML mapping
         const detailsHtml = row.details
@@ -218,17 +249,19 @@
           )
           .join("");
 
-        // Build Content Column
-        const contentHtml = `
-            <div class="content-column">
-                <h2 class="row-title">${row.title}</h2>
-                <div class="details-list">
-                    ${detailsHtml}
+        // Build Content Row
+        const contentRowHtml = `
+            <div class="pxl-content-row">
+                <div class="content-column">
+                    <h2 class="row-title">${row.title}</h2>
+                    <div class="details-list">
+                        ${detailsHtml}
+                    </div>
                 </div>
             </div>`;
 
         // Assemble Row
-        rowWrapper.innerHTML = mediaHtml + contentHtml;
+        rowWrapper.innerHTML = mediaRowHtml + contentRowHtml;
 
         fragment.appendChild(rowWrapper);
       });
