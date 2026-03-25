@@ -1,0 +1,198 @@
+<!-- 
+  ========================================================================
+  ### PRIME CARS USP SECTION - LIGHT CREAM & ORANGE THEME ###
+  ========================================================================
+  DEPLOYMENT INSTRUCTIONS:
+  1. Add an Elementor HTML Widget to your page.
+  2. Paste this entire code block into the widget content.
+  3. Replace 'REPLACE_WITH_YOUR_...' placeholders with actual image URLs.
+-->
+<style>
+  /* Base Container with Cream Background */
+  .pc-usp-container {
+    display: block;
+    width: 100%;
+    background-color: #f4f2f1; /* Updated to Cream */
+    color: #4b4f57; /* Updated to Dark Gray */
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 60px 0;
+    position: relative;
+  }
+
+  /* Structural Top Accent Line using Light Orange */
+  .pc-usp-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      #ea833a,
+      transparent
+    ); /* Updated to Light Orange */
+  }
+
+  /* Core Flex Grid Layout */
+  .pc-usp-grid {
+    display: flex;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  /* Individual USP Item */
+  .pc-usp-item {
+    flex: 1 1 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+    height: 100%;
+  }
+
+  /* Vertical Dividers mapped to Medium Gray (#6F7880) with opacity */
+  .pc-usp-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 80%;
+    background-color: rgba(111, 120, 128, 0.2); /* Subtle Gray Divider */
+  }
+
+  /* Icon Container */
+  .pc-usp-icon-wrapper {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+  }
+
+  /* Image Styling with Light Orange shadow accent */
+  .pc-usp-icon-wrapper img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    display: block;
+    /* Soft orange glow to integrate your assets into the new theme */
+    filter: drop-shadow(0px 4px 8px rgba(234, 131, 58, 0.25));
+  }
+
+  /* Text Wrapper */
+  .pc-usp-text-container {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  /* Heading Styling (Dark Gray) */
+  .pc-usp-heading {
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-bottom: 5px;
+    color: #4b4f57;
+  }
+
+  /* Description Styling (Medium Gray) */
+  .pc-usp-description {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #74777d;
+  }
+
+  /* Responsive Behavior for Mobile */
+  @media (max-width: 767px) {
+    .pc-usp-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pc-usp-item {
+      flex: 1 1 100%;
+      width: 100%;
+      border-bottom: 1px solid rgba(111, 120, 128, 0.2); /* Horizontal Gray Divider */
+      padding: 30px 0;
+    }
+
+    .pc-usp-item:not(:last-child)::after {
+      display: none;
+    }
+
+    .pc-usp-icon-wrapper {
+      height: 70px;
+    }
+  }
+</style>
+
+<div class="pc-usp-container">
+  <div class="pc-usp-grid">
+    <!-- Item 1: Car Quality -->
+    <div class="pc-usp-item">
+      <div class="pc-usp-icon-wrapper">
+        <img
+          src="https://targacar.com/wp-content/uploads/CarQuality-scaled.png"
+          alt="Car Quality Icon"
+        />
+      </div>
+      <div class="pc-usp-text-container">
+        <span class="pc-usp-heading">Car Quality</span>
+        <span class="pc-usp-description">Satisfaction Assurance</span>
+      </div>
+    </div>
+
+    <!-- Item 2: Personal Data -->
+    <div class="pc-usp-item">
+      <div class="pc-usp-icon-wrapper">
+        <img
+          src="https://targacar.com/wp-content/uploads/PersonalData.png"
+          alt="Personal Data Protection Icon"
+        />
+      </div>
+      <div class="pc-usp-text-container">
+        <span class="pc-usp-heading">Personal Data</span>
+        <span class="pc-usp-description">Protection</span>
+      </div>
+    </div>
+
+    <!-- Item 3: Car Rental Insurance -->
+    <div class="pc-usp-item">
+      <div class="pc-usp-icon-wrapper">
+        <img
+          src="https://targacar.com/wp-content/uploads/CarRental-scaled.png"
+          alt="First Class Insurance Icon"
+        />
+      </div>
+      <div class="pc-usp-text-container">
+        <span class="pc-usp-heading">Car Rental</span>
+        <span class="pc-usp-description">First Class Insurance</span>
+      </div>
+    </div>
+
+    <!-- Item 4: International Customer Service -->
+    <div class="pc-usp-item">
+      <div class="pc-usp-icon-wrapper">
+        <img
+          src="https://targacar.com/wp-content/uploads/International.png"
+          alt="International Customer Service Icon"
+        />
+      </div>
+      <div class="pc-usp-text-container">
+        <span class="pc-usp-heading">International</span>
+        <span class="pc-usp-description">Customer Service</span>
+      </div>
+    </div>
+  </div>
+</div>
