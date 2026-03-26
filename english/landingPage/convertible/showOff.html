@@ -25,10 +25,10 @@
   .pc-usp-container::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: -10%;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 55px;
     background: linear-gradient(
       to right,
       #ea833a,
@@ -113,6 +113,15 @@
     color: #74777d;
   }
 
+  #topic {
+    position: absolute;
+    top: -10%;
+    left: 5%;
+    font-size: 3vw;
+    font-weight: 700;
+    color: white;
+  }
+
   /* Responsive Behavior for Mobile */
   @media (max-width: 767px) {
     .pc-usp-grid {
@@ -134,10 +143,34 @@
     .pc-usp-icon-wrapper {
       height: 70px;
     }
+
+    .pc-usp-container::before {
+      content: "";
+      position: absolute;
+      top: -3%;
+      left: 0;
+      width: 100%;
+      height: 55px;
+      background: linear-gradient(
+        to right,
+        #ea833a,
+        transparent
+      ); /* Updated to Light Orange */
+    }
+
+    #topic {
+      position: absolute;
+      top: -2%;
+      left: 5%;
+      font-size: 5vw;
+      font-weight: 700;
+      color: white;
+    }
   }
 </style>
 
 <div class="pc-usp-container">
+  <h1 id="topic">Why should rent with us?</h1>
   <div class="pc-usp-grid">
     <!-- Item 1: Car Quality -->
     <div class="pc-usp-item">
