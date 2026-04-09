@@ -8,8 +8,9 @@
     </p>
   </div>
   <img
+    class="targa-process-header__image"
     src="https://targacar.com/wp-content/uploads/rentStep.png"
-    alt="rent step"
+    alt="Targa Car Rental Step Process"
   />
 </div>
 
@@ -20,9 +21,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 4rem 0;
-    padding-bottom: 0;
-    background-color: #f9f5f3; /* Inherits from your Elementor section background */
+    padding: 0;
+    background-color: #f9f5f3;
     font-family:
       system-ui,
       -apple-system,
@@ -31,10 +31,19 @@
       Roboto,
       sans-serif;
     position: relative;
+    margin: 0;
+    width: 100%; /* Ensure full width execution */
   }
 
   .wrapper-header {
     position: absolute;
+    top: 5%; /* Pin to top relative to parent instead of floating */
+    z-index: 2; /* Ensure it stays above the image */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 1rem; /* Prevent text from touching edges on mobile */
   }
 
   .targa-process-header__overline {
@@ -42,7 +51,7 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #c0824b; /* Adjusted to match the specific copper tone in your visual */
+    color: #c0824b;
     margin-bottom: 1.25rem;
   }
 
@@ -58,21 +67,34 @@
   .targa-process-header__description {
     font-size: 1.125rem;
     color: #666666;
-    max-width: 65ch; /* Caps the character count to prevent edge-to-edge stretching on large viewports */
+    max-width: 65ch;
     margin: 0;
     line-height: 1.6;
   }
 
-  /* Media Query for tight mobile viewports if clamp() isn't aggressive enough */
-  @media (max-width: 480px) {
-    .targa-process-header {
-      padding: 3rem 1rem;
-    }
-    .targa-process-header__overline {
-      margin-bottom: 0.75rem;
-    }
+  /* Structural fix for image baseline rendering gap */
+  .targa-process-header__image {
+    display: block; /* Removes the 4px baseline whitespace */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: 1;
+    /* CSS Hack to absorb the baked-in transparent pixels in the PNG asset.
+       Percentage scales responsively with the container width. 
+       Adjust -15% as needed (e.g., -10% or -20%) to fine-tune the gap. */
+    margin-bottom: -5%;
+  }
+
+  /* Mobile Check */
+  @media (max-width: 768px) {
     .wrapper-header {
-      position: relative;
+      position: relative; /* Release from absolute on mobile so it stacks naturally above the image */
+      padding: 3rem 1rem 1rem 1rem;
+    }
+
+    .targa-process-header__image {
+      margin-bottom: -17%;
     }
   }
 </style>
