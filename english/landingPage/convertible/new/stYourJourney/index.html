@@ -1,0 +1,116 @@
+<style>
+  /* * Retaining structural wrapper styles.
+   */
+  .prestige-cta-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    background-color: #fdfdfd;
+    overflow: hidden;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif;
+  }
+
+  .prestige-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(6rem, 22vw, 18rem);
+    font-weight: 900;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.025);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .prestige-cta-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+  }
+
+  .prestige-cta-heading {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: #111111;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.03em;
+  }
+
+  .prestige-cta-subheading {
+    font-size: 1.125rem;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0 auto 2.5rem auto;
+    max-width: 90%;
+  }
+
+  /* * Architect Note: Added display, text-decoration, and box-sizing 
+   * to strictly enforce button-like layout on the inline <a> element.
+   */
+  .prestige-btn-primary {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #ab5d11 0%, #e88633 100%);
+    color: #ffffff;
+    border: none;
+    padding: 1.1rem 2.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(232, 134, 51, 0.35);
+    transition:
+      transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      box-shadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .prestige-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(232, 134, 51, 0.45);
+    color: #ffffff; /* Override Elementor theme anchor hover states */
+  }
+
+  .prestige-btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px rgba(232, 134, 51, 0.3);
+  }
+
+  .prestige-btn-primary.is-loading {
+    opacity: 0.8;
+    cursor: wait;
+    pointer-events: none;
+  }
+</style>
+
+<section class="prestige-cta-wrapper" aria-label="Booking Call to Action">
+  <div class="prestige-watermark" aria-hidden="true">PRESTIGE</div>
+
+  <div class="prestige-cta-content">
+    <h2 class="prestige-cta-heading">Start Your Journey.</h2>
+    <p class="prestige-cta-subheading">
+      The open road is calling. Secure your dream vehicle today and experience
+      excellence in motion.
+    </p>
+    <a
+      id="btnInitBooking"
+      class="prestige-btn-primary"
+      href="https://line.me/R/ti/p/%40targacar"
+    >
+      Book Now
+    </a>
+  </div>
+</section>
