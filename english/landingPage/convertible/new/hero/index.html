@@ -17,7 +17,7 @@
     position: relative;
     background-color: #fcf9f7;
     overflow: hidden;
-    padding: 6rem 0;
+    padding: 6rem 1rem;
     font-family: var(--vlc-font-sans);
     min-height: 800px;
     min-width: 100% !important;
@@ -35,10 +35,14 @@
     z-index: 10;
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     .vlc-hero-container {
       flex-direction: row;
       gap: 2rem;
+    }
+
+    .vlc-hero-wrapper {
+      padding: 6rem 0;
     }
   }
 
