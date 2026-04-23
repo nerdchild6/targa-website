@@ -193,7 +193,7 @@
 
       <div class="vlc-hero-actions">
         <a
-          href="https://line.me/R/ti/p/%40targacar"
+          href="https://targacar.com/deeplink?id=ISDQN"
           class="vlc-btn vlc-btn-primary"
           id="btn-start-reservation"
         >
@@ -220,3 +220,33 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const reservationBtn = document.getElementById("btn-start-reservation");
+
+    if (reservationBtn) {
+      reservationBtn.addEventListener("click", function (e) {
+        e.preventDefault(); // Suspend DOM navigation
+
+        const deepLinkTarget = this.href;
+
+        // 1. Fire Google Ads Micro-Conversion Payload
+        if (typeof gtag === "function") {
+          gtag("event", "conversion", {
+            send_to: "AW-17962923482/mVdACKL6toIcENrrsfVC",
+          });
+        } else {
+          console.warn(
+            "Google DataLayer not initialized. Proceeding to deep link.",
+          );
+        }
+
+        // 2. Resume navigation after 300ms buffer
+        setTimeout(function () {
+          window.location.href = deepLinkTarget;
+        }, 300);
+      });
+    }
+  });
+</script>
