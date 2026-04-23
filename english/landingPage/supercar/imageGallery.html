@@ -50,14 +50,27 @@
     line-height: 1.2;
   }
 
-  /* --- 3. CSS GRID ARCHITECTURE --- */
+  /* --- 3. CSS GRID ARCHITECTURE (MOBILE CAROUSEL FIRST) --- */
   .rc-gallery-grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: var(--gallery-grid-gap);
-    padding: 0;
+    /* Mobile First: Horizontal Scroll Carousel */
+    grid-auto-flow: column;
+    grid-auto-columns: 85%; /* Next image peeks in to indicate scrollability */
+    gap: 16px;
+    padding: 0 0 20px 0; /* Bottom padding for scroll area */
     margin: 0;
     list-style: none;
+
+    /* Native App-like Swipe Physics */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox: hide scrollbar */
+  }
+
+  /* Hide scrollbar for Chrome/Safari but keep functionality */
+  .rc-gallery-grid::-webkit-scrollbar {
+    display: none;
   }
 
   /* Tablet */
@@ -66,7 +79,11 @@
       padding: 80px 40px;
     }
     .rc-gallery-grid {
+      grid-auto-flow: row; /* Revert to vertical grid */
       grid-template-columns: repeat(2, 1fr);
+      overflow-x: visible;
+      scroll-snap-type: none;
+      padding-bottom: 0;
     }
   }
 
@@ -90,6 +107,9 @@
     overflow: hidden;
     background-color: var(--gallery-bg-skeleton);
 
+    /* Mobile Carousel Snapping Point */
+    scroll-snap-align: center;
+
     /* Hardware Acceleration Preparation */
     transform: translateZ(0);
     will-change: transform, opacity;
@@ -100,6 +120,13 @@
     transition:
       opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Disable snapping on larger screens where it is a static grid */
+  @media (min-width: 768px) {
+    .rc-gallery-item {
+      scroll-snap-align: none;
+    }
   }
 
   .rc-gallery-item.is-revealed {
