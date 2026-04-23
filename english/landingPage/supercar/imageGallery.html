@@ -22,6 +22,8 @@
     margin: 0 auto;
     font-family: inherit; /* Inherits from Elementor global fonts */
     box-sizing: border-box;
+    /* Mobile First: Generous padding on all sides to prevent edge-touching */
+    padding: 40px 20px;
   }
 
   .rc-gallery-header {
@@ -60,6 +62,9 @@
 
   /* Tablet */
   @media (min-width: 768px) {
+    .rc-gallery-section {
+      padding: 80px 40px;
+    }
     .rc-gallery-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -67,6 +72,9 @@
 
   /* Desktop */
   @media (min-width: 1024px) {
+    .rc-gallery-section {
+      padding: 120px 20px; /* Substantial top/bottom padding for premium desktop feel */
+    }
     .rc-gallery-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -111,6 +119,11 @@
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
+  /* Apply object-position directly to the img tag inside the extra-image figure */
+  .rc-gallery-item.extra-image img {
+    object-position: center bottom !important;
+  }
+
   .rc-gallery-item:hover img {
     transform: scale(1.04);
   }
@@ -128,8 +141,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80"
-        alt="Woman in white dress posing between a private jet and a luxury silver sports car"
+        src="https://targacar.com/wp-content/uploads/SUTEP-584-ของ-683-scaled.jpg"
+        alt="Woman in white dress posing between a private jet and a luxury silver supercar"
         loading="lazy"
         decoding="async"
         width="800"
@@ -139,8 +152,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=800&q=80"
-        alt="Close up of a red Ferrari front wheel and logo detailing"
+        src="https://targacar.com/wp-content/uploads/SUTEP-335-ของ-683-scaled.jpg"
+        alt="Close up of a red Ferrari supercar front wheel and logo detailing"
         loading="lazy"
         decoding="async"
         width="800"
@@ -150,8 +163,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80"
-        alt="Dark blue luxury sports car parked in front of a private turboprop airplane"
+        src="https://targacar.com/wp-content/uploads/SUTEP-77-ของ-683-scaled.jpg"
+        alt="Dark blue luxury supercar parked in front of a private turboprop airplane"
         loading="lazy"
         decoding="async"
         width="800"
@@ -161,8 +174,19 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80"
-        alt="Red sports car viewed from the side mirror of an airplane"
+        src="https://targacar.com/wp-content/uploads/SUTEP-404-ของ-683-scaled.jpg"
+        alt="Red supercar viewed from the side mirror of an airplane"
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="800"
+      />
+    </figure>
+
+    <figure class="rc-gallery-item extra-image">
+      <img
+        src="https://targacar.com/wp-content/uploads/SUTEP-343-ของ-683-scaled.jpg"
+        alt="Close up of a Maybach luxury supercar hood ornament against a plain background"
         loading="lazy"
         decoding="async"
         width="800"
@@ -172,8 +196,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80"
-        alt="Close up of a Maybach luxury car hood ornament against a plain background"
+        src="https://targacar.com/wp-content/uploads/SUTEP-467-ของ-683-scaled.jpg"
+        alt="Woman sitting on the front bumper of a dark supercar with butterfly doors open"
         loading="lazy"
         decoding="async"
         width="800"
@@ -183,8 +207,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1620882746654-e0b48da142fb?auto=format&fit=crop&w=800&q=80"
-        alt="Woman sitting on the front bumper of a dark sports car with butterfly doors open"
+        src="https://targacar.com/wp-content/uploads/SUTEP-493-ของ-683-scaled.jpg"
+        alt="Rear view of a white Porsche 911 Carrera S supercar with Targa license plate"
         loading="lazy"
         decoding="async"
         width="800"
@@ -194,8 +218,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1503376760367-172535d8da99?auto=format&fit=crop&w=800&q=80"
-        alt="Rear view of a white Porsche 911 Carrera S with Targa license plate"
+        src="https://targacar.com/wp-content/uploads/SUTEP-155-ของ-683-scaled.jpg"
+        alt="Black and white shot of a luxury Mercedes supercar interior showing steering wheel and rear seating"
         loading="lazy"
         decoding="async"
         width="800"
@@ -205,19 +229,8 @@
 
     <figure class="rc-gallery-item">
       <img
-        src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80"
-        alt="Black and white shot of a luxury Mercedes interior showing steering wheel and rear seating"
-        loading="lazy"
-        decoding="async"
-        width="800"
-        height="800"
-      />
-    </figure>
-
-    <figure class="rc-gallery-item">
-      <img
-        src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80"
-        alt="Man leaning against a luxury dark sedan with a private plane in the background"
+        src="https://targacar.com/wp-content/uploads/SUTEP-125-ของ-683-scaled.jpg"
+        alt="Man leaning against a luxury dark sedan supercar with a private plane in the background"
         loading="lazy"
         decoding="async"
         width="800"
