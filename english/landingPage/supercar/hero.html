@@ -1,0 +1,111 @@
+<style>
+  :root {
+    --supp-site-font: "Poppins", "Inter", "Fredoka", sans-serif;
+    --brand-accent: #e67e22;
+  }
+
+  .hero-optimized {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 85vh;
+    padding: 0 5%;
+    font-family: var(--supp-site-font);
+    overflow: hidden;
+  }
+
+  .hero-optimized__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .hero-optimized__pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.15) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.2
+    ); /* Slight darkening for text contrast */
+    z-index: 2;
+  }
+
+  .hero-optimized__content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    color: #ffffff;
+  }
+
+  .hero-optimized__title {
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero-optimized__title span {
+    color: var(--brand-accent);
+  }
+
+  .hero-optimized__desc {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+
+  .hero-optimized__btn {
+    display: inline-block;
+    background-color: var(--brand-accent);
+    color: #ffffff;
+    padding: 14px 32px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 50px;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .hero-optimized__btn:hover {
+    background-color: #d67118;
+    transform: translateY(-2px);
+  }
+</style>
+
+<section class="hero-optimized">
+  <img
+    src="https://targacar.com/wp-content/uploads/hero-1-scaled.jpg"
+    alt="Premium supercar rental fleet"
+    class="hero-optimized__bg"
+    fetchpriority="high"
+  />
+  <div class="hero-optimized__pattern"></div>
+  <div class="hero-optimized__content">
+    <h1 class="hero-optimized__title">Drive the <span>Extraordinary</span></h1>
+    <p class="hero-optimized__desc">
+      Experience world-class supercar rental. Curated for those who demand
+      excellence and performance in every mile.
+    </p>
+    <a href="/gallery" class="hero-optimized__btn" id="heroGalleryBtn"
+      >Explore Gallery</a
+    >
+  </div>
+</section>
