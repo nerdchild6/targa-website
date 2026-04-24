@@ -47,7 +47,7 @@
 
   .pxl-hero-title {
     font-family: "Inter", sans-serif; /* Adjust to match global theme */
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(1.5rem, 5vw, 4.5rem);
     font-weight: 700;
     color: #ffffff;
     line-height: 1.2;
@@ -121,6 +121,12 @@
   }
   .pxl-delay-3 {
     transition-delay: 0.5s;
+  }
+
+  @media (max-width: 380px) {
+    .pxl-hero-cta {
+      font-size: 0.8rem !important;
+    }
   }
 </style>
 
