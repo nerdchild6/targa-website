@@ -90,9 +90,8 @@
   }
 
   .rcms-filter-btn {
-    background: transparent !important;
+    background: transparent;
     border: none;
-    border-radius: 0%;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.05em;
@@ -103,6 +102,7 @@
       color var(--rcms-transition-standard),
       border-color var(--rcms-transition-standard);
     text-transform: uppercase;
+    cursor: default !important; /* Force override of Elementor global button styles */
   }
 
   .rcms-filter-btn.active,
@@ -180,9 +180,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    /* Strict enforcement to bypass Elementor/WordPress default height:auto rules */
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
     display: block;
     transition: transform 0.7s ease;
   }
@@ -319,7 +321,7 @@
         title: "Ferrari 488",
         category: "supercar",
         price: "65,000 THB",
-        image: "https://targacar.com/wp-content/uploads/DSC03315-scaled.jpeg",
+        image: "https://targacar.com/wp-content/uploads/cover.png",
         postUrl: "/cars/ferrari-488/",
         specs: [
           { icon: "⚙️", text: "AUTOMATIC" },
