@@ -1,0 +1,190 @@
+<!-- 
+  ARCHITECTURE NOTE: 
+  Place this code within an Elementor Free "HTML Widget".
+  Ensure the parent Elementor Section is set to:
+  - Height: Min Height (e.g., 80vh or 100vh)
+  - Padding: 0
+-->
+
+<style>
+  /* DOM & Paint Optimization:
+    Hardware-accelerated transforms and opacities strictly enforced to guarantee 60fps 
+    during scroll-triggered micro-interactions. Zero Cumulative Layout Shift (CLS) footprint.
+  */
+  :root {
+    --hero-cta-gradient: linear-gradient(90deg, #e38d41 0%, #fcf3ea 100%);
+    --hero-text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.6);
+    --animation-easing: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .pxl-custom-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    min-height: 80vh;
+    padding: 2rem;
+    box-sizing: border-box;
+
+    /* BACKGROUND IMAGE INTEGRATION:
+      Replace 'YOUR_IMAGE_LINK_HERE' with the actual URL of your supercar image.
+      The linear-gradient overlay is preserved to ensure text readability.
+    */
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0.4) 100%
+      ),
+      url("https://targacar.com/wp-content/uploads/messageImage_1776852943578.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .pxl-hero-title {
+    font-family: "Inter", sans-serif; /* Adjust to match global theme */
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    max-width: 900px;
+    text-shadow: var(--hero-text-shadow);
+  }
+
+  .pxl-hero-subtitle {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 400;
+    color: #f1f1f1;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    text-shadow: var(--hero-text-shadow);
+    line-height: 1.2;
+  }
+
+  .pxl-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hero-cta-gradient);
+    color: #6d3e15; /* High contrast typography for accessibility */
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 20px 48px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(227, 141, 65, 0.2);
+    /* SEO/A11y: Ensure touch targets are at least 48x48px */
+  }
+
+  .pxl-hero-cta:hover,
+  .pxl-hero-cta:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(227, 141, 65, 0.4);
+    outline: none;
+  }
+
+  /* Intersection Observer Animation Classes 
+    Utilizes will-change to notify the browser compositor of impending mutations.
+  */
+  .pxl-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    will-change: opacity, transform;
+    transition:
+      opacity 1s var(--animation-easing),
+      transform 1s var(--animation-easing);
+  }
+
+  .pxl-reveal.pxl-is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered delays for sequential reveal */
+  .pxl-delay-1 {
+    transition-delay: 0.1s;
+  }
+  .pxl-delay-2 {
+    transition-delay: 0.3s;
+  }
+  .pxl-delay-3 {
+    transition-delay: 0.5s;
+  }
+</style>
+
+<!-- 
+  SEMANTIC HTML & SEO:
+  - `<header>` denotes introductory content context.
+  - `<h1>` establishes the primary structural node for crawlers.
+  - ARIA attributes reinforce accessibility standards.
+-->
+<header class="pxl-custom-hero" aria-label="Premium Supercar Reservation">
+  <h1 class="pxl-hero-title pxl-reveal pxl-delay-1">
+    Experience the Power. <br />
+    Drive the Dream.
+  </h1>
+
+  <p class="pxl-hero-subtitle pxl-reveal pxl-delay-2">
+    Limited slots available for weekend drives. Reserve your masterpiece today.
+  </p>
+
+  <div class="pxl-reveal pxl-delay-3">
+    <!-- Replace #booking-engine with the anchor ID or Polylang localized URL -->
+    <a
+      href="#booking-engine"
+      class="pxl-hero-cta"
+      aria-label="Proceed to supercar reservation engine"
+    >
+      Reserve Your Supercar
+    </a>
+  </div>
+</header>
+
+<script>
+  /* VANILLA JS OBSERVER:
+    Decoupled from heavy libraries (jQuery/GSAP) to maintain core web vitals.
+    Instantiates an IntersectionObserver to trigger animations when elements enter the viewport.
+  */
+  document.addEventListener("DOMContentLoaded", () => {
+    const revealElements = document.querySelectorAll(".pxl-reveal");
+
+    // Polyfill check for older browsers, though highly uncommon in modern enterprise environments
+    if (!("IntersectionObserver" in window)) {
+      revealElements.forEach((el) => el.classList.add("pxl-is-visible"));
+      return;
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -10% 0px", // Triggers slightly before element enters view
+      threshold: 0.1,
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // RequestAnimationFrame ensures class mutation happens right before the next repaint
+          window.requestAnimationFrame(() => {
+            entry.target.classList.add("pxl-is-visible");
+          });
+          // Unobserve to conserve memory after animation execution
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+  });
+</script>
